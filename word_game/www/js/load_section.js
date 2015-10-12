@@ -20,7 +20,9 @@ $(document).ready(function(){
             descriptionArea.append(data['S_DESC']);
             leftButton.append(data['ANSWERS'][0]);
             rightButton.append(data['ANSWERS'][1]);
-            questionArea.append(data['QUESTIONS']['Q_TEXT0']);
+
+            var questionNumberId = 'Q_TEXT' + (currentQuestionNumber - 1);
+            questionArea.append(data['QUESTIONS'][questionNumberId]);
             timerContainer.append(data['S_TIME']);
 
             var step = currentQuestionNumber + "/" + data['Q_COUNT'];
