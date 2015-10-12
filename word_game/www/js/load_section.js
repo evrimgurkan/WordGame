@@ -1,12 +1,14 @@
+    window.questionList             = [];
+    window.currentQuestionNumber    = 1;
+    window.totalQuestionNumber      = -1;
+
 $(document).ready(function(){
     var descriptionArea = $('#descriptionArea');
-    var leftButton      = $('#leftButton');
-    var rightButton     = $('#rightButton');
+    var leftButton      = document.getElementById("leftButton");
+    var rightButton     = document.getElementById("rightButton");
     var questionArea    = $('#questionArea');
     var timerContainer  = $('#timerContainer');
     var stepContainer   = $('#stepContainer');
-
-    var currentQuestionNumber = 1;
 
     var s_id = 0;
 
@@ -18,15 +20,23 @@ $(document).ready(function(){
         success: function(data, status){
 
             descriptionArea.append(data['S_DESC']);
-            leftButton.append(data['ANSWERS'][0]);
-            rightButton.append(data['ANSWERS'][1]);
+            leftButton.innerHTML = data['ANSWERS'][0];
+            leftButton.value = data['ANSWERS'][0];
+            rightButton.innerHTML = (data['ANSWERS'][1]);
+            rightButton.value = data['ANSWERS'][1];
 
-            var questionNumberId = 'Q_TEXT' + (currentQuestionNumber - 1);
-            questionArea.append(data['QUESTIONS'][questionNumberId]);
+            var questionNumberId = 'Q_TEXT' + (currentQuestionNumber);
+            
+            $.each(data['QUESTIONS'], function(key, value){ 
+                questionList[key] = value;
+            });
+
+            questionArea.append(questionList[questionNumberId]);
+
             timerContainer.append(data['S_TIME']);
 
-            var step = currentQuestionNumber + "/" + data['Q_COUNT'];
-
+            totalQuestionNumber = data['Q_COUNT']
+            var step = currentQuestionNumber + "/" + totalQuestionNumber;
             stepContainer.append(step);
        
         },
