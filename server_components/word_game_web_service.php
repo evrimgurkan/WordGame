@@ -11,6 +11,7 @@ $input_section_id = $_GET['s_id'];
 $answers_array 	= array();
 $section_array	= array();
 $question_array	= array();
+$result_array	= array();
 
 $con = mysql_connect($server, $username, $password) or die ("Could not connect: " . mysql_error());
 mysql_select_db($database, $con);
@@ -47,7 +48,7 @@ while($row = mysql_fetch_assoc($answer_result)) {
 
 $sql_question = "SELECT qq.text as Q_TEXT, aa.text as Q_ANSWER
 FROM tbl_answer as aa, tbl_question as qq
-WHERE qq.answer_id = aa.answer_id and qq.section_id = " .$section_id;
+WHERE qq.answer_id = aa.id and qq.section_id = " .$section_id;
 
 $question_result = mysql_query($sql_question) or die ("Query error: " . mysql_error());
 
@@ -61,7 +62,26 @@ mysql_close($con);
 
 #redesign json object
 
+$result_array = array(S_TIME 	=> $section_array['S_TIME'],
+					  S_ID 	 	=> $section_array['S_ID'],
+					  S_DESC 	=> $section_array['S_DESC'],
+					  S_CONST 	=> $section_array['CONSTANT'],
+					  Q_COUNT 	=> $section_array['Q_COUNT']);
 
+$temp_answer_array = array();
+for ($i=0; $i < count($answers_array) ; $i++) { 
+	$temp_answer_array += array($i 	=> $answers_array[$i]['A_TEXT']);
+}
 
-echo $_GET['jsoncallback'] . '(' . json_encode($answers_array) . ');';
+$result_array += array(ANSWERS 	=> $temp_answer_array);
+
+$temp_question_array = array();
+for ($i=0; $i < count($question_array) ; $i++) { 
+	$temp_question_array += array(Q_TEXT.$i 	=> $question_array[$i]['Q_TEXT'],
+								  Q_ANSWER.$i 	=> $question_array[$i]['Q_ANSWER']);
+}
+
+$result_array += array(QUESTIONS 	=> $temp_question_array);
+
+echo $_GET['jsoncallback'] . '(' . json_encode($result_array) . ');';
 ?>
