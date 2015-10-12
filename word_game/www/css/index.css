@@ -113,3 +113,128 @@ h1 {
     animation:fade 3000ms infinite;
     -webkit-animation:fade 3000ms infinite;
 }
+
+
+/* Word Game */
+
+#menuBanner {
+    width: 100%;
+    height: 40px;
+    background-color: purple;
+    margin-bottom: 5px;
+}
+
+.sideMenuButton {
+    background-image: url("../img/menu.png");
+}
+
+#applicationContainer {
+    margin: 10px;
+    padding: 10px;
+}
+
+#descriptionArea {
+    text-align: center;
+}
+
+#descriptionArea span{
+    font-size: medium;
+    font-family: monospace;
+    font-weight: bold;
+}
+
+#circleContainer {
+
+}
+
+#timerContainer {
+    float: left;
+    margin-right: 25%;
+}
+
+#stepContainer{
+    margin-left: 25%;
+}
+#questionArea {
+    margin-top: 50px;
+    text-align: center;
+    font-size: large;
+    font-family: serif;
+}
+
+#notificationDialog {
+    margin: 10px auto;
+    text-align: center;
+    width: 100px;
+    height: 75px;
+    display: none;
+}
+#notificationDialog span {
+    font-size: xx-large;
+    font-family: serif;
+    font-weight: bold;
+}
+#leftButton {
+    float: left;
+    margin-right: 5px;
+}
+
+.button-secondary {
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    background: rgb(66, 184, 221); /* this is a light blue */
+}
+
+.pure-button {
+    font-family: inherit;
+}
+.pure-button {
+    font-family: inherit;
+    font-size: 100%;
+    padding: .5em 1em;
+    color: #444;
+    color: rgba(0,0,0,.8);
+    border: 1px solid #999;
+    border: 0 rgba(0,0,0,0);
+    background-color: #E6E6E6;
+    text-decoration: none;
+    border-radius: 2px;
+}
+.pure-button {
+    display: inline-block;
+    zoom: 1;
+    line-height: normal;
+    white-space: nowrap;
+    vertical-align: middle;
+    text-align: center;
+    cursor: pointer;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+html, button .pure-g [class *= "pure-u"] {
+    font-family: sans-serif;
+    font-weight: 100;
+    letter-spacing: 0.01em;
+}
+button, html input[type=button]{
+    -webkit-appearance: button;
+    cursor: pointer;
+}
+button {
+    text-transform: none;
+}
+button {
+    overflow: visible;
+}
+button{
+    color: inherit;
+    font: inherit;
+    margin: 0;
+}
