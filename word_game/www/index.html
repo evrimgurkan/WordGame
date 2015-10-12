@@ -27,8 +27,10 @@
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
         <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/load_section.js"></script>
         <script type="text/javascript">
             app.initialize();
         </script>
@@ -51,20 +53,20 @@
         </div>
         <div id="applicationContainer">
             <div id="descriptionArea">
-                <span>Hangi kategoriye ait olduğunu bulunuz!</span>
+                <span></span>
             </div>
             <div id="circleContainer">
-                <div id="timerContainer">67</div>
-                <div id="stepContainer">3/25</div>
+                <div id="timerContainer"></div>
+                <div id="stepContainer"></div>
             </div>
-            <div id="questionArea">Ziraat Mühengisliği hangi alandadır?</div>
+            <div id="questionArea"></div>
             <div id="notificationDialog">
                 <span>Geri Sayım 4,3,2,1</span>
             </div>
             <!--<div id="leftButton" class="btn">Sözel</div>
             <div id="rightButton" class="btn">Sayısal</div>-->
-            <button id="leftButton"  class="button-secondary pure-button">Sözel</button>
-            <button id="rightButton" class="button-secondary pure-button">Sayısal</button>
+            <button id="leftButton"  class="button-secondary pure-button"></button>
+            <button id="rightButton" class="button-secondary pure-button"></button>
         </div>
         
         
