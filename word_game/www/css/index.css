@@ -156,10 +156,14 @@ h1 {
 }
 
 #questionArea {
-    margin-top: 50px;
+    margin-top: 5%;
+    border-radius: 50px;
     text-align: center;
     font-family: 'Kaushan Script', cursive;
     font-size: 30px;
+    padding-bottom: 5%;
+    padding-top: 5%;
+    background-color: #999999;
 }
 
 #notificationDialog {
@@ -270,7 +274,7 @@ button{
 #stepContainer span {
     position: absolute;
     line-height: 125px;
-    margin-left: 55px;
+    margin-left: 40px;
     margin-top: 15px;
     color: white;
     z-index: 3;
