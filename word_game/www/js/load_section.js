@@ -1,17 +1,19 @@
+    window.questionList             = [];
+    window.currentQuestionNumber    = 1;
+    window.totalQuestionNumber      = -1;
+
 $(document).ready(function(){
 
     initTimers(90);
     updateStep(1,40);
     var descriptionArea = $('#descriptionArea');
-    var leftButton      = $('#leftButton');
-    var rightButton     = $('#rightButton');
+    var leftButton      = document.getElementById("leftButton");
+    var rightButton     = document.getElementById("rightButton");
     var questionArea    = $('#questionArea');
     var timerContainer  = $('#timerContainer');
     var stepContainer   = $('#stepContainer');
 
-    var currentQuestionNumber = 1;
-
-    var s_id = 1;
+    var s_id = 0;
 
     $.ajax({
         url: 'http://localhost/word_game_web_service.php?s_id=' + s_id,
@@ -20,18 +22,24 @@ $(document).ready(function(){
         timeout: 5000,
         success: function(data, status){
 
-            descriptionArea.append('Aşağıdaki Soruları Cevaplayın Layn!');
-            leftButton.append('Sayısal');
-            rightButton.append('Sözel');
+            leftButton.innerHTML = data['ANSWERS'][0];
+            leftButton.value = data['ANSWERS'][0];
+            rightButton.innerHTML = (data['ANSWERS'][1]);
+            rightButton.value = data['ANSWERS'][1];
 
-            var questionNumberId = 'Q_TEXT' + (currentQuestionNumber - 1);
-            questionArea.append('Ziraat Mühendisliği');
-            //timerContainer.append(90);
+            var questionNumberId = 'Q_TEXT' + (currentQuestionNumber);
+            
+            $.each(data['QUESTIONS'], function(key, value){ 
+                questionList[key] = value;
+            });
 
-            var step = currentQuestionNumber + "/" + data['Q_COUNT'];
+            questionArea.append(questionList[questionNumberId]);
 
-            //stepContainer.append('3/40');
+            //timerContainer.append(data['S_TIME']);
 
+            totalQuestionNumber = data['Q_COUNT']
+            var step = currentQuestionNumber + "/" + totalQuestionNumber;
+            //stepContainer.append(step);
         },
         error: function(){
            output.text('There was an error loading the data.');
