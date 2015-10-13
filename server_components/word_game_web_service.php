@@ -77,8 +77,8 @@ $result_array += array(ANSWERS 	=> $temp_answer_array);
 
 $temp_question_array = array();
 for ($i=0; $i < count($question_array) ; $i++) { 
-	$temp_question_array += array(Q_TEXT.$i 	=> $question_array[$i]['Q_TEXT'],
-								  Q_ANSWER.$i 	=> $question_array[$i]['Q_ANSWER']);
+	$temp_question_array += array(Q_TEXT.($i + 1) 	=> $question_array[$i]['Q_TEXT'],
+								  Q_ANSWER.($i + 1)	=> $question_array[$i]['Q_ANSWER']);
 }
 
 $result_array += array(QUESTIONS 	=> $temp_question_array);
