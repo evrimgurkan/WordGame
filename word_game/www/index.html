@@ -26,8 +26,13 @@
         <meta name="msapplication-tap-highlight" content="no" />
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+
+        <link href='https://fonts.googleapis.com/css?family=Sancreek' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="css/index.css" />
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript" src="js/load_section.js"></script>
@@ -56,8 +61,24 @@
                 <span></span>
             </div>
             <div id="circleContainer">
-                <div id="timerContainer"></div>
-                <div id="stepContainer"></div>
+                <div id="timerContainer">
+                    <span id="timerValue">0</span>
+                    <svg width="160" height="160" xmlns="http://www.w3.org/2000/svg">
+                        <g>
+                            <title>Layer 1</title>
+                            <circle id="timer_circle" class="circle_animation" r="69.85699" cy="81" cx="81" stroke-width="20" stroke="#6fdb6f" fill="#666666"/>
+                        </g>
+                    </svg>
+                </div>
+                <div id="stepContainer">
+                    <span id="stepValue">1 / 40</span>
+                    <svg width="160" height="160" xmlns="http://www.w3.org/2000/svg">
+                        <g>
+                            <title>Layer 1</title>
+                            <circle id="step_circle" class="circle_animation" r="69.85699" cy="81" cx="81" stroke-width="20" stroke="#DD5740" fill="#666666"/>
+                        </g>
+                    </svg>
+                </div>
             </div>
             <div id="questionArea"></div>
             <div id="notificationDialog">
@@ -65,8 +86,10 @@
             </div>
             <!--<div id="leftButton" class="btn">Sözel</div>
             <div id="rightButton" class="btn">Sayısal</div>-->
-            <button id="leftButton"  class="button-secondary pure-button"></button>
-            <button id="rightButton" class="button-secondary pure-button"></button>
+            <div id="selectionButtons">
+                <button id="leftButton"  class="button-secondary pure-button"></button>
+                <button id="rightButton" class="button-secondary pure-button"></button>
+            </div>
         </div>
         
         
