@@ -4,7 +4,7 @@
 
 $(document).ready(function(){
 
-    initTimers(90);
+    initTimers(20);
     updateStep(1,40);
     var descriptionArea = $('#descriptionArea');
     var leftButton      = document.getElementById("leftButton");
@@ -53,9 +53,11 @@ function initTimers(iTme)
     var time = iTme;
     var initialOffset = '440';
     var i = 1;
+    var timer_value = document.getElementById('timerValue');
+    timer_value.innerHTML = time;
     var timer_interval = setInterval(function() {
         $('#timer_circle').css('stroke-dashoffset', initialOffset-(i*(initialOffset/time)));
-        document.getElementById('timerValue').innerHTML = i;
+        timer_value.innerHTML = time - i;
 
         if (i == time) {
             clearInterval(timer_interval);
