@@ -3,9 +3,6 @@
     window.totalQuestionNumber      = -1;
 
 $(document).ready(function(){
-
-    initTimers(20);
-    updateStep(1,40);
     var descriptionArea = $('#descriptionArea');
     var leftButton      = document.getElementById("leftButton");
     var rightButton     = document.getElementById("rightButton");
@@ -13,7 +10,7 @@ $(document).ready(function(){
     var timerContainer  = $('#timerContainer');
     var stepContainer   = $('#stepContainer');
 
-    var s_id = 0;
+    var s_id = 1;
 
     $.ajax({
         url: 'http://localhost/word_game_web_service.php?s_id=' + s_id,
@@ -36,10 +33,11 @@ $(document).ready(function(){
             questionArea.append(questionList[questionNumberId]);
 
             //timerContainer.append(data['S_TIME']);
+            initTimers(data['S_TIME']);
 
             totalQuestionNumber = data['Q_COUNT']
-            var step = currentQuestionNumber + "/" + totalQuestionNumber;
-            //stepContainer.append(step);
+
+            updateStep(currentQuestionNumber, totalQuestionNumber);
         },
         error: function(){
            output.text('There was an error loading the data.');
@@ -77,9 +75,7 @@ function updateStep(currentStep,totalStep)
 
         if (step == step_count) {
             //clearInterval(step_interval);
-            alert('Reached Total Step');
+            //alert('Reached Total Step');
         }
         step++;
-    //}, 1000);
-
 }
