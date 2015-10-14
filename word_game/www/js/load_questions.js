@@ -50,10 +50,10 @@ function updateDisplay(answer, buttonID){
     updateStep(window.currentQuestionNumber, window.totalQuestionNumber);
 
     if (answer === true) {
-        document.getElementById(buttonID).style.color = "green";
+        updateButtonColor(buttonID, "green");
     }
     else {
-        document.getElementById(buttonID).style.color = "red";
+        updateButtonColor(buttonID, "red");
     }
 }
 
@@ -61,4 +61,13 @@ function checkQuestionAvailability() {
     if (window.currentQuestionNumber >= window.totalQuestionNumber) {
         result = ResultEnum.question_finish;
     }
+}
+
+function updateButtonColor(buttonID, buttonColor) {
+    document.getElementById(buttonID).style.color = buttonColor;
+    setTimeout(setToOriginal, 500, buttonID);
+}
+
+function setToOriginal(buttonID) {
+  document.getElementById(buttonID).style.color = "white";
 }
