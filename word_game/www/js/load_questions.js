@@ -30,6 +30,8 @@ function onButtonClick(buttonID) {
         questionUpdate(answer);
         updateDisplay(answer, buttonID);
     }
+
+    setTimeout(function(){ clearScreenChanges(buttonID) }, 500);
 }
 
 function questionUpdate(answer) {
@@ -44,16 +46,24 @@ function questionUpdate(answer) {
     document.getElementById("questionArea").innerHTML = window.questionList[questionNumberId];
 }
 
+function clearScreenChanges(buttonID)
+{
+    document.getElementById(buttonID).style.backgroundColor = "#3c5cff"; // blue
+    document.getElementById(buttonID).style.boxShadow = "0 0 10px 0 #3c5cff";
+}
+
 // change question number
 function updateDisplay(answer, buttonID){
 
     updateStep(window.currentQuestionNumber, window.totalQuestionNumber);
 
     if (answer === true) {
-        document.getElementById(buttonID).style.color = "green";
+        document.getElementById(buttonID).style.backgroundColor = "#6FDB6F"; // green
+        document.getElementById(buttonID).style.boxShadow = "0 0 10px 0 #6FDB6F";
     }
     else {
-        document.getElementById(buttonID).style.color = "red";
+        document.getElementById(buttonID).style.backgroundColor = "#980F0F";
+        document.getElementById(buttonID).style.boxShadow = "0 0 10px 0 #980F0F";
     }
 }
 

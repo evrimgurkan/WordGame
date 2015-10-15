@@ -43,46 +43,33 @@
         <title>First App!</title>
     </head>
     <body>
-        <!--<div class="app">
-            <h1>Hello World</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
-
-            </div>
-            <p id="demo">asda</p>
-            <button id="hibuttonclick">Click Me!!!</button>
-        </div>-->
-
         <div id="menuBanner">
             <a href="#" class="sideMenuButton"></a>
             <a href="#" class="appName">Word Game</a>
         </div>
         <div id="applicationContainer">
             <div id="descriptionArea">
-                <span></span>
+                <span>Soruları Cevaplayınız</span>
             </div>
-            <div id="circleContainer">
-                <div id="timerContainer">
-                    <span id="timerValue">0</span>
-                    <svg width="160" height="160" xmlns="http://www.w3.org/2000/svg">
-                        <g>
-                            <title>Layer 1</title>
-                            <circle id="timer_circle" class="circle_animation" r="69.85699" cy="81" cx="81" stroke-width="20" stroke="#6fdb6f" fill="#666666"/>
-                        </g>
-                    </svg>
-                </div>
-                <div id="stepContainer">
-                    <span id="stepValue">1 / 40</span>
-                    <svg width="160" height="160" xmlns="http://www.w3.org/2000/svg">
-                        <g>
-                            <title>Layer 1</title>
-                            <circle id="step_circle" class="circle_animation" r="69.85699" cy="81" cx="81" stroke-width="20" stroke="#DD5740" fill="#666666"/>
-                        </g>
-                    </svg>
+            <div id="stepContainer">
+                <div class="cont">
+                    <div id="progressBar" class="progress-bar" ></div>
                 </div>
             </div>
-            <div id="questionArea"></div>
+
+            <div id="timerContainer">
+                <span id="timerValue">0</span>
+                <svg width="160" height="160" xmlns="http://www.w3.org/2000/svg">
+                    <g>
+                        <title>Layer 1</title>
+                        <circle id="timer_circle" class="circle_animation" r="69" cy="81" cx="81" stroke-width="19" stroke="#6fdb6f" fill="#303E49"/>
+                    </g>
+                </svg>
+            </div>
+            <div id="stepValue">1 / 40</div>
+            <div id="questionArea">
+
+            </div>
             <div id="notificationDialog">
                 <span>Geri Sayım 4,3,2,1</span>
             </div>

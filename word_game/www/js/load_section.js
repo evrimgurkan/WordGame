@@ -67,15 +67,12 @@ function initTimers(iTme)
 function updateStep(currentStep,totalStep)
 {
     var step_count = totalStep;
-    var initialOffset = '440';
     var step = currentStep;
-    //var step_interval = setInterval(function() {
-        $('#step_circle').css('stroke-dashoffset', initialOffset-(step*(initialOffset/step_count)));
-        document.getElementById('stepValue').innerHTML = step + '/' + step_count;
-
-        if (step == step_count) {
-            //clearInterval(step_interval);
-            //alert('Reached Total Step');
-        }
-        step++;
+    document.getElementById('stepValue').innerHTML = step + '/' + step_count;
+    var progElement = document.getElementById('progressBar');
+    progElement.style.width = (step / step_count) * 100 + '%';
+    if (step == step_count) {
+        //clearInterval(step_interval);
+        alert('Reached Total Step');
+    }
 }
