@@ -6,11 +6,11 @@ var ResultEnum = {
     none                : 4
 }
 
-    window.result = ResultEnum.none;
+window.result = ResultEnum.none;
 
 function onButtonClick(buttonID) {
     var buttonValue         = document.getElementById(buttonID).value;
-    var questionAnswerID    = "Q_ANSWER" + window.currentQuestionNumber;
+    var questionAnswerID    = "Q_ANSWER" + window.currentQuestionNo;
     var questionAnswer      = window.questionList[questionAnswerID];
     var answer              = false;
     if (buttonValue === questionAnswer) {
@@ -36,13 +36,13 @@ function onButtonClick(buttonID) {
 
 function questionUpdate(answer) {
     if (answer === true) {
-        window.currentQuestionNumber++;
+        window.currentQuestionNo++;
     }
     else{
-        window.currentQuestionNumber = 1;
+        window.currentQuestionNo = 1;
     }
 
-    var questionNumberId = 'Q_TEXT' + (window.currentQuestionNumber);
+    var questionNumberId = 'Q_TEXT' + (window.currentQuestionNo);
     document.getElementById("questionArea").innerHTML = window.questionList[questionNumberId];
 }
 
@@ -55,7 +55,7 @@ function clearScreenChanges(buttonID)
 // change question number
 function updateDisplay(answer, buttonID){
 
-    updateStep(window.currentQuestionNumber, window.totalQuestionNumber);
+    updateStep(window.currentQuestionNo, window.totalQuestionCount);
 
     if (answer === true) {
         document.getElementById(buttonID).style.backgroundColor = "#6FDB6F"; // green
@@ -68,7 +68,7 @@ function updateDisplay(answer, buttonID){
 }
 
 function checkQuestionAvailability() {
-    if (window.currentQuestionNumber >= window.totalQuestionNumber) {
-        result = ResultEnum.question_finish;
+    if (window.currentQuestionNo >= window.totalQuestionCount) {
+        result = ResultEnum.questions_finished;
     }
 }

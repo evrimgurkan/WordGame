@@ -429,6 +429,18 @@ svg {
     }
 }
 
+@media screen and (width: 320px)  and (height: 480px) /* Mobile */ {
+    #descriptionArea {
+        margin-top: 3%;
+        font-size: 100%;
+    }
+
+    #selectionButtons{
+        margin-top: 3%;
+        font-size: 125%;
+    }
+}
+
 @media screen and (width: 360px)  and (height: 640px) /* Mobile */ {
     #timerContainer {
         margin-left: 23%;

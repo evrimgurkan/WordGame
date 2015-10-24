@@ -1,6 +1,6 @@
-    window.questionList             = [];
-    window.currentQuestionNumber    = 1;
-    window.totalQuestionNumber      = -1;
+window.questionList             = [];
+window.currentQuestionNo    = 1;
+window.totalQuestionCount      = -1;
 
 $(document).ready(function(){
     var descriptionArea = $('#descriptionArea');
@@ -35,9 +35,9 @@ $(document).ready(function(){
             //timerContainer.append(data['S_TIME']);
             initTimers(data['S_TIME']);
 
-            totalQuestionNumber = data['Q_COUNT']
+            totalQuestionCount = data['Q_COUNT']
 
-            updateStep(currentQuestionNumber, totalQuestionNumber);
+            updateStep(currentQuestionNumber, totalQuestionCount);
         },
         error: function(){
            output.text('There was an error loading the data.');

@@ -1,0 +1,154 @@
+body {
+    -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
+    -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
+    -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
+    color: #333333;
+    font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+    font-size:12px;
+    height:100%;
+    margin:0px;
+    padding:0px;
+    width:100%;
+    background-color: #1A2631;
+}
+
+#menuBanner {
+    width: 100%;
+    height: 50px;
+    background-color: #6FDB6F;
+    margin-bottom: 5%;
+    text-align: center;
+}
+
+.appName {
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    font-size: xx-large;
+    text-decoration: initial;
+    font-family: 'Sancreek', cursive;
+}
+
+.navigationContainer {
+    text-align: center;
+}
+
+#selectionButtons {
+    text-align: center;
+    margin-top: 10%;
+    font-family: 'Kaushan Script', cursive;
+    font-size: 150%;
+}
+
+#leftButton {
+    margin-right: 10%;
+    background-color: #3c5cff;
+    box-shadow: 0 0 10px 0 #3c5cff; /* Inherits the font color */
+    color: white;
+}
+
+#rightButton {
+    background-color: #3c5cff;
+    color: white;
+    box-shadow: 0 0 10px 0 #3c5cff; /* Inherits the font color */
+}
+
+.ofllineSeperation {
+    margin-top: 5%;
+}
+
+.ofllineSeperation span{
+    text-align: center;
+    font-family: 'Kaushan Script', cursive;
+    font-size: 200%;
+    color: orangered;
+}
+
+.button-secondary {
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    background: rgb(66, 184, 221); /* this is a light blue */
+}
+
+.pure-button {
+    font-family: inherit;
+}
+.pure-button {
+    padding: .5em 1em;
+    color: #444;
+    color: rgba(0,0,0,.8);
+    border: 1px solid #999;
+    border: 0 rgba(0,0,0,0);
+    background-color: #3c5cff;
+    box-shadow: 0 0 10px 0 #3c5cff; /* Inherits the font color */
+    color: white;
+    text-align: center;
+    margin-top: 10%;
+    margin-right: 2%;
+    font-family: 'Kaushan Script', cursive;
+    font-size: 200%;
+    text-decoration: none;
+    border-radius: 2px;
+}
+.pure-button {
+    display: inline-block;
+    zoom: 1;
+    line-height: normal;
+    white-space: nowrap;
+    vertical-align: middle;
+    text-align: center;
+    cursor: pointer;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+html, button .pure-g [class *= "pure-u"] {
+    font-family: sans-serif;
+    font-weight: 100;
+    letter-spacing: 0.01em;
+}
+button, html input[type=button]{
+    -webkit-appearance: button;
+    cursor: pointer;
+}
+button {
+    text-transform: none;
+}
+button {
+    overflow: visible;
+}
+button{
+    color: inherit;
+    font: inherit;
+    margin: 0;
+}
+
+@media screen and (max-width: 384px)  and (max-height: 567px) /* Mobile */ {
+    .pure-button {
+        font-size: 150%;
+    }
+}
+
+@media screen and (min-height: 600px) and (max-height: 900px)/* Mobile */ {
+    .pure-button {
+        font-size: 225%;
+    }
+}
+
+@media screen and (min-width: 600px)  and (min-height: 900px) /* Mobile */ {
+    .navigationContainer {
+        font-size: 150%;
+    }
+    .appName {
+        font-size: 550%;
+    }
+    #menuBanner {
+        height: 90px;
+    }
+}

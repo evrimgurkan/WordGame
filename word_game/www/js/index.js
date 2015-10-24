@@ -16,46 +16,73 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-var app = {
-    // Application Constructor
-    initialize: function() {
-        this.bindEvents();
-    },
-    // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
-    bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);       
-    },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicitly call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
-        app.receivedEvent('deviceready');
 
-    },
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
+var Application = function (){
 
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
+    this.getGameData = function (sectionId) {
 
-        var mybutton = document.getElementById('hibuttonclick');
-        mybutton.addEventListener('click', this.onHiButton, false);
+        $.ajax({
+            url: 'http://localhost/word_game_web_service.php?s_id=' + sectionId,
+            dataType: 'jsonp',
+            jsonp: 'jsoncallback',
+            timeout: 5000,
+            success: gameData,
+            error: ajaxErrorHandle
+        });
+    };
 
-        console.log('Received Event: ' + id);
-    },
+    var gameData = function (section_data) {
 
-    onHiButton: function() {
-        //alert("HI");
-        document.getElementById("demo").innerHTML = "Hello World";
-        alert("HI Hello world asdasd");
-    }
+        var result_data = {};
+        //result_data.gameStates = {
+        //    time_is_up: 0,
+        //    questions_finished: 1,
+        //    new_section: 2,
+        //    section_completed: 3,
+        //    continue : 4,
+        //    none: 5
+        //};
+        //
+        //result_data.currentGameState =  result_data.gameStates.continue;
+        //result_data.currentQuestionNo = 1;
+
+        result_data.leftBtnValue = section_data['ANSWERS'][0];
+        result_data.rightBtnValue = section_data['ANSWERS'][1];
+        result_data.questionList = {};
+
+        $.each(section_data['QUESTIONS'], function(key, value){
+            result_data.questionList[key] = value;
+        });
+        result_data.totalQuestionCount = section_data['Q_COUNT'];
+        result_data.sectionTime = section_data['S_TIME'];
+
+        sessionStorage.setItem("gameData",JSON.stringify(result_data));
+    };
+
+    var ajaxErrorHandle = function() {
+
+        alert('Veri yüklenirken hata oluştu!');
+
+        var result_data = {};
+        //result_data.gameStates = {
+        //    time_is_up: 0,
+        //    questions_finished: 1,
+        //    new_section: 2,
+        //    section_completed: 3,
+        //    none: 4
+        //};
+        //
+        //result_data.currentGameState =  result_data.gameStates.none;
+        //result_data.currentQuestionNo = 1;
+
+        result_data.leftBtnValue = " ";
+        result_data.rightBtnValue = " ";
+        result_data.questionList = {};
+
+        result_data.totalQuestionCount = 0;
+        result_data.sectionTime = 0;
+
+        sessionStorage.setItem("gameData",JSON.stringify(result_data));
+    };
 };
-
 
