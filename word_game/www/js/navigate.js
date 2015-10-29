@@ -54,7 +54,8 @@ var navigation = {
         {
             case CONSTANTS.strings.navigation.CASE_START_APPLICATION:
             {
-                if (connection._currentState === connection.states.online)
+                var conState = connection.getDeviceConnection();
+                if ( conState === connection.states.online)
                 {
                     window.location = CONSTANTS.strings.navigation.LINK_GAME_SCREEN_PAGE;
                 }

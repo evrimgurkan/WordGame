@@ -56,7 +56,7 @@ var connection = {
 
         if (!result)
         {
-            this._currentState = this.states.offline;
+            this._currentState = this.states.online;
             messageBox.show(CONSTANTS.strings.connection.MESSAGE_OFFLINE, // message
                             null, // callback
                             [CONSTANTS.strings.connection.M_BTN_OKEY]); // button label
