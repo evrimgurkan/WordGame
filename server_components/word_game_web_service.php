@@ -3,7 +3,7 @@ header('Content-type: application/json');
 
 $server = "localhost";
 $username = "root";
-$password = "";
+$password = "nlEhsDDjxe";
 $database = "db_word_game";
 
 $input_section_id = $_GET['s_id'];

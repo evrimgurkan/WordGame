@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Anamakine: localhost
--- Üretim Zamanı: 13 Eki 2015, 22:58:06
--- Sunucu sürümü: 5.5.44-0ubuntu0.14.04.1
--- PHP Sürümü: 5.5.9-1ubuntu4.13
+-- Üretim Zamanı: 29 Eki 2015, 13:08:45
+-- Sunucu sürümü: 5.5.46-0ubuntu0.14.04.2
+-- PHP Sürümü: 5.5.9-1ubuntu4.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
