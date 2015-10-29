@@ -36,7 +36,7 @@ var CONSTANTS = {
 
         application: {
             MESSAGE_CONTINUE_GAME : '5 sn içinde oyun devam edecek.',
-            LINK_WEB_SERVICE : 'http://localhost/word_game_web_service.php?s_id=',
+            LINK_WEB_SERVICE : 'http://192.168.1.20/word_game_web_service.php?s_id=',
             LEFT_BUTTON_ERROR_VALUE : ' ',
             RIGHT_BUTTON_ERROR_VALUE : ' '
         },
