@@ -28,6 +28,14 @@ body {
     text-decoration: initial;
     font-family: 'Sancreek', cursive;
 }
+.sideMenuButton {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    width: 24px;
+    height: 24px;
+    background-image: url("../img/back.svg");
+}
 
 .description {
     color: white;

@@ -1,28 +1,16 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
 
-var Application = function (){
+var Application = function (iGame){
+    var _self = this;
+    var _game = iGame;
 
-    this.getGameData = function (sectionId) {
+    /**
+     * Public Functions
+     */
+
+    _self.getGameData = function (sectionId) {
 
         $.ajax({
-            url: 'http://localhost/word_game_web_service.php?s_id=' + sectionId,
+            url: CONSTANTS.strings.application.LINK_WEB_SERVICE + sectionId,
             dataType: 'jsonp',
             jsonp: 'jsoncallback',
             timeout: 5000,
@@ -31,20 +19,34 @@ var Application = function (){
         });
     };
 
+    _self.bindEvents = function () {
+        document.addEventListener(CONSTANTS.events.application.PAUSE, onApplicationPaused, false);
+        document.addEventListener(CONSTANTS.events.application.RESUME, onApplicationResumed, false);
+    };
+
+    /**
+     * Private Functions
+     */
+
+    // PhoneGap consists of two code bases: native and JavaScript.
+    // While the native code puts the application into the background the pause event is fired.
+    // This is an event that fires when a PhoneGap application is put into the background.
+    var onApplicationPaused = function () {
+        _game.stopTimer();
+    };
+
+    //This is an event that fires when a PhoneGap application is retrieved from the background.
+    var onApplicationResumed = function () {
+        // continue play game with remained time
+
+        loading.show(CONSTANTS.strings.application.MESSAGE_CONTINUE_GAME, _game.continueTimer);
+        setTimeout(loading.hide(), 5000);
+    };
+
+
     var gameData = function (section_data) {
 
         var result_data = {};
-        //result_data.gameStates = {
-        //    time_is_up: 0,
-        //    questions_finished: 1,
-        //    new_section: 2,
-        //    section_completed: 3,
-        //    continue : 4,
-        //    none: 5
-        //};
-        //
-        //result_data.currentGameState =  result_data.gameStates.continue;
-        //result_data.currentQuestionNo = 1;
 
         result_data.leftBtnValue = section_data['ANSWERS'][0];
         result_data.rightBtnValue = section_data['ANSWERS'][1];
@@ -56,33 +58,34 @@ var Application = function (){
         result_data.totalQuestionCount = section_data['Q_COUNT'];
         result_data.sectionTime = section_data['S_TIME'];
 
-        sessionStorage.setItem("gameData",JSON.stringify(result_data));
+
+        /*
+         * !!!!!!!!!!!!!!!!!!!!!! SHOULD BE GET FROM WEBSERVICE !!!!!!!!!!!!!!!!!!!!!!!!!!!
+         */
+        result_data.sectionCount = 1;
+        result_data.scoreMultiplier = 10;
+        /**********************************************************************************/
+
+        _game.onSectionQuestionsLoaded(result_data);
+        _game.hideLoadingIcon();
     };
 
     var ajaxErrorHandle = function() {
 
-        alert('Veri yüklenirken hata oluştu!');
-
         var result_data = {};
-        //result_data.gameStates = {
-        //    time_is_up: 0,
-        //    questions_finished: 1,
-        //    new_section: 2,
-        //    section_completed: 3,
-        //    none: 4
-        //};
-        //
-        //result_data.currentGameState =  result_data.gameStates.none;
-        //result_data.currentQuestionNo = 1;
 
-        result_data.leftBtnValue = " ";
-        result_data.rightBtnValue = " ";
+        result_data.leftBtnValue = CONSTANTS.strings.application.LEFT_BUTTON_ERROR_VALUE;
+        result_data.rightBtnValue = CONSTANTS.strings.application.RIGHT_BUTTON_ERROR_VALUE;
         result_data.questionList = {};
 
         result_data.totalQuestionCount = 0;
         result_data.sectionTime = 0;
+        result_data.sectionCount = 1;
+        result_data.scoreMultiplier = 10;
+        //sessionStorage.setItem("gameData",JSON.stringify(result_data));
 
-        sessionStorage.setItem("gameData",JSON.stringify(result_data));
+        _game.hideLoadingIcon();
+        _game.showNoDataDialog();
     };
 };
 

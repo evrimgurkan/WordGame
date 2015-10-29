@@ -30,15 +30,19 @@
         <link href='https://fonts.googleapis.com/css?family=Sancreek' rel='stylesheet' type='text/css'>
         <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="../css/gameScreen.css" />
+        <link rel="stylesheet" type="text/css" href="../css/notification.css" />
 
         <script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
 
+        <script type="text/javascript" src="../js/strings.js"></script>
         <script type="text/javascript" src="../js/navigate.js"></script>
         <script type="text/javascript" src="../js/game.js"></script>
         <script type="text/javascript" src="../js/index.js"></script>
+        <script type="text/javascript" src="../js/notification.js"></script>
         <!--<script type="text/javascript" src="../js/load_section.js"></script>
         <script type="text/javascript" src="../js/load_questions.js"></script>-->
+
         <script type="text/javascript">
             navigation.initialize();
             navigation.setPreviousPage('../index.html');
@@ -47,8 +51,8 @@
     </head>
     <body>
         <div id="menuBanner">
-            <a href="#" class="sideMenuButton"></a>
-            <a href="#" class="appName">Word Game</a>
+            <a onclick="navigation.onBackKeyDown()" class="sideMenuButton"></a>
+            <span class="appName">Word Game</span>
         </div>
         <div id="applicationContainer">
             <div id="descriptionArea">
@@ -84,11 +88,21 @@
             </div>
         </div>
 
+        <div class="cd-popup" role="alert">
+            <div class="cd-popup-container">
+                <div class="loader disable">Loading...</div>
+                <p class="message-area"></p>
+                <ul class="cd-buttons">
+                    <!--<li><a id="popupLeftButton" onclick='messageBox.onButtonClicked(this.id)'>Yes</a></li>-->
+                    <!--<li><a id="popupRightButton" onclick='messageBox.onButtonClicked(this.id)'>No</a></li>-->
+                </ul>
+            </div> <!-- cd-popup-container -->
+        </div> <!-- cd-popup -->
+
         <script type="text/javascript">
-            var data = JSON.parse(sessionStorage.getItem("gameData"));
-            window._game = new Game(data);
+//            var data = JSON.parse(sessionStorage.getItem("gameData"));
+            window._game = new Game(/*data*/);
             _game.init();
-            _game.startGame();
         </script>
     </body>
 </html>

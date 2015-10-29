@@ -17,47 +17,58 @@ var navigation = {
     // Bind Event Listeners
     //
     // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
+    // 'load', 'deviceready', 'backbutton', and 'online'.
     bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
-        document.addEventListener("backbutton", this.onBackKeyDown, false);        // Register the event listener
-        document.addEventListener("menubutton", this.onMenuKeyDown, false);
-    },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicitly call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
-
+        document.addEventListener(CONSTANTS.events.navigation.BACK_BUTTON, this.onBackKeyDown, false);        // Register the event listener
+        document.addEventListener(CONSTANTS.events.navigation.MENU_BUTTON, this.onMenuKeyDown, false);
     },
 
     onMenuKeyDown: function() {
-        alert("menuye basıldı");
+        //alert("menuye basıldı");
     },
 
     onBackKeyDown: function() {
-        alert("back key basıldı");
+
         if (_previousPage !== undefined)
         {
             window.location = _previousPage;
         }
-        else
+        else // in home page, exit app
         {
-            alert("Çıkmak istiyor musunuz?");
+            messageBox.show(CONSTANTS.strings.navigation.MESSAGE_EXIT_APPLICATION,
+                            navigation.onExitApplication(),
+                            [CONSTANTS.strings.navigation.M_BTN_EXIT_APPLICATION_CONFIRM,
+                             CONSTANTS.strings.navigation.M_BTN_EXIT_APPLICATION_CANCEL]);
+        }
+    },
+
+    onExitApplication : function (buttonIndex){
+        if (buttonIndex === 0) // Exit
+        {
+            navigator.app.exitApp();
         }
     },
 
     navigateToPage: function (buttonID) {
         switch (buttonID)
         {
-            case 'offlineMode':
+            case CONSTANTS.strings.navigation.CASE_START_APPLICATION:
             {
-                window.location = 'views/gameScreen.html';
+                if (connection._currentState === connection.states.online)
+                {
+                    window.location = CONSTANTS.strings.navigation.LINK_GAME_SCREEN_PAGE;
+                }
+                else
+                {
+                    messageBox.show(CONSTANTS.strings.navigation.MESSAGE_NO_CONNECTION,
+                                    navigation.navigateToPage(buttonID),
+                                    [CONSTANTS.strings.navigation.M_BTN_RETRY]);
+                }
                 break;
             }
-            case 'howToButton':
+            case CONSTANTS.strings.navigation.CASE_GOTO_HOWTO_PAGE:
             {
-                window.location = 'views/howto.html';
+                window.location = CONSTANTS.strings.navigation.LINK_HOWTO_PAGE;
                 break;
             }
             default :

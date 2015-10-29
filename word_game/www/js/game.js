@@ -4,13 +4,18 @@
 
 
 
-var Game = function (iGameData) {
+var Game = function (/*iGameData*/) {
 
     var _self = this;
-    var _application = new Application();
-    var generatedSectionID;
+    var _application = new Application(_self);
+    var _generatedSectionID;
     var _timerInterval,
-        resetGameCount;
+        _resetGameCount,
+        _currentTime,
+        _currentScore = 0,
+        _totalScore = 0,
+        _sectionCount = 1; // TODO: should be increased
+
     var _gameStates = {
         time_is_up: 0,
         section_completed: 1,
@@ -18,23 +23,43 @@ var Game = function (iGameData) {
         none: 3
     };
 
-    var _gameData = iGameData;
-
-    var SCORE_CONST = 10;
-    var STR_TIME_IS_UP = 'Zaman Tükendi!';
-    var STR_COMPLETED_QUESTIONS = 'Tebrikler, Tüm soruları cevapladınız.';
+    var _gameData ;
 
     _self.init = function (){
+        _totalScore = 0;
+        _application.bindEvents();
+        _self.getSectionQuestions();
+    };
+
+    _self.getSectionQuestions = function () {
+
+        _self.showLoadingIcon(CONSTANTS.strings.game.MESSAGE_QUESTIONS_LOADING);
+        // generate random value between 1-100
+        _generatedSectionID = Math.floor((Math.random() * _sectionCount) + 1);
+        _application.getGameData(_generatedSectionID);
+    };
+
+    _self.onSectionQuestionsLoaded = function (data) {
+        _gameData = data;
+        _sectionCount = _gameData.sectionCount;
+        _self.clearAllScreen();
+        _self.startGame();
+    };
+
+    _self.clearAllScreen = function (){
+        _self.showLoadingIcon(CONSTANTS.strings.game.MESSAGE_QUESTIONS_LOADING);
         _self.currentGameState =  _gameStates.continue;
         _self.currentQuestionNo = 1;
-        resetGameCount = 0;
-        generatedSectionID = 1;
+        _resetGameCount = 0;
+        _currentTime = 0;
+        _currentScore = 0;
+        _generatedSectionID = 1;
         $('#questionArea').html('');
         document.getElementById("leftButton").innerHTML = '';
         document.getElementById("leftButton").value = '';
         document.getElementById("rightButton").innerHTML = '';
         document.getElementById("rightButton").value = '';
-    }
+    };
 
     _self.startGame = function (){
 
@@ -42,7 +67,7 @@ var Game = function (iGameData) {
         var leftButton      = document.getElementById("leftButton");
         var rightButton     = document.getElementById("rightButton");
         var questionArea    = $('#questionArea');
-
+        _currentScore = 0;
         leftButton.innerHTML = _gameData.leftBtnValue;
         leftButton.value = _gameData.leftBtnValue;
         rightButton.innerHTML = _gameData.rightBtnValue;
@@ -52,6 +77,7 @@ var Game = function (iGameData) {
         var question = _gameData.questionList[questionNumberId];
         questionArea.append(question);
 
+        _self.hideLoadingIcon();
         _self.initTimers(_gameData.sectionTime);
         _self.updateStep();
     };
@@ -61,23 +87,36 @@ var Game = function (iGameData) {
         var initialOffset = '440';
         var i = 1;
         var timer_value = document.getElementById('timerValue');
-        timer_value.innerHTML = time;
+        _currentTime = time;
+
         _timerInterval = setInterval(function() {
             $('#timer_circle').css('stroke-dashoffset', initialOffset-(i*(initialOffset/time)));
-            timer_value.innerHTML = time - i;
+            _currentTime = time - i;
+
+            timer_value.innerHTML = _currentTime;
 
             if (i == time) {
                 _self.currentGameState = _gameStates.time_is_up;
-                _self.notifyMessage(STR_TIME_IS_UP);
-                _self.calculateScore(0);
+                var score = _self.calculateScore();
+                var message = CONSTANTS.strings.game.MESSAGE_TIME_IS_UP  + CONSTANTS.strings.game.MESSAGE_SCORE + score ;
+                _self.notifyGameFinishedMessage(message);
             }
             else if (_self.currentGameState === _gameStates.section_completed) {
-                _self.notifyMessage(STR_COMPLETED_QUESTIONS);
-                _self.calculateScore(time - i);
+                var score = _self.calculateScore();
+                var message = CONSTANTS.strings.game.MESSAGE_COMPLETED_QUESTIONS  + CONSTANTS.strings.game.MESSAGE_SCORE + score ;
+                _self.notifyGameFinishedMessage(message);
             }
 
             i++;
         }, 1000);
+    };
+
+    _self.stopTimer = function() {
+        clearInterval(_timerInterval);
+    };
+
+    _self.continueTimer = function() {
+        _self.initTimers(_self.currentTime);
     };
 
     _self.updateStep = function () {
@@ -111,7 +150,6 @@ var Game = function (iGameData) {
 
         if (_self.currentGameState === _gameStates.time_is_up) {
             //gameOver
-            _self.notifyMessage(STR_TIME_IS_UP);
             return;
         }
 
@@ -122,13 +160,13 @@ var Game = function (iGameData) {
 
         if (_clickedButtonValue === _questionAnswer) {
             _isAnswerCorrect = true;
+            _self.checkNextQuestionAvailability();
         }
         else {
             _isAnswerCorrect = false;
-            resetGameCount++;
+            _resetGameCount++;
         }
 
-        _self.checkNextQuestionAvailability();
         if (_self.currentGameState === _gameStates.continue) {
             _self.questionUpdate(_isAnswerCorrect);
         }
@@ -154,20 +192,20 @@ var Game = function (iGameData) {
 
     _self.clearScreenChanges = function (buttonID) {
 
-        document.getElementById(buttonID).style.backgroundColor = "#3c5cff"; // blue
-        document.getElementById(buttonID).style.boxShadow = "0 0 10px 0 #3c5cff";
+        document.getElementById(buttonID).style.backgroundColor = CONSTANTS.strings.game.COLOR_BLUE; // blue
+        document.getElementById(buttonID).style.boxShadow = "0 0 10px 0 " + CONSTANTS.strings.game.COLOR_BLUE;
     };
 
     _self.updateDisplay = function (answer, buttonID) {
 
         _self.updateStep();
         if (answer === true) {
-            document.getElementById(buttonID).style.backgroundColor = "#6FDB6F"; // green
-            document.getElementById(buttonID).style.boxShadow = "0 0 10px 0 #6FDB6F";
+            document.getElementById(buttonID).style.backgroundColor = CONSTANTS.strings.game.COLOR_GREEN; // green
+            document.getElementById(buttonID).style.boxShadow = "0 0 10px 0 " + CONSTANTS.strings.game.COLOR_GREEN;
         }
         else {
-            document.getElementById(buttonID).style.backgroundColor = "#980F0F";
-            document.getElementById(buttonID).style.boxShadow = "0 0 10px 0 #980F0F";
+            document.getElementById(buttonID).style.backgroundColor = CONSTANTS.strings.game.COLOR_RED;
+            document.getElementById(buttonID).style.boxShadow = "0 0 10px 0 " + CONSTANTS.strings.game.COLOR_RED;
         }
     };
 
@@ -178,38 +216,120 @@ var Game = function (iGameData) {
         }
     };
 
-    _self.calculateScore = function (remainedTime) {
+    _self.calculateScore = function () {
 
-        clearInterval(_timerInterval);
-        _self.getNewSection();// get new section data async
-        var calculatedScoreConstant = SCORE_CONST;
-        if (SCORE_CONST < (resetGameCount + 4))
+       _self.stopTimer();
+
+        var calculatedScoreConstant = _gameData.scoreMultiplier;
+        if (_gameData.scoreMultiplier < (_resetGameCount + 4))
         {
             calculatedScoreConstant  = 4;
         }
         else
         {
-            calculatedScoreConstant = (SCORE_CONST - resetGameCount);
+            calculatedScoreConstant = (_gameData.scoreMultiplier - _resetGameCount);
         }
-        var score = (calculatedScoreConstant * _self.currentQuestionNo) + remainedTime;
-        sessionStorage.setItem('score',score);
+        _currentScore = (calculatedScoreConstant * _self.currentQuestionNo) + _currentTime;
 
-        _self.notifyMessage(score);
+        // show total score on screen,
+        // let the user to increase its score
+        // if it wants to go next, then add _currentScore to _totalScore
+        return _totalScore + _currentScore;
     };
 
-    _self.notifyMessage = function (message) {
-        alert(message);
+    _self.showNoDataDialog = function (){
+        // Show a custom confirmation dialog
+        var message = CONSTANTS.strings.game.MESSAGE_NO_DATA;
+        if (typeof messageBox !== CONSTANTS.strings.global.UNDEFINED) {
+
+            messageBox.show(message, _self.onNoDataDialogClosed, [CONSTANTS.strings.game.M_BTN_RETRY,
+                                                                  CONSTANTS.strings.game.M_BTN_BACK]);
+        }
+        else
+        {
+            alert(message);
+        }
     };
 
-    _self.getNewSection = function () {
-        // generate random value between 1-100
-        generatedSectionID = Math.floor((Math.random() * 100) + 1) % 1 +1;
-        _application.getGameData(generatedSectionID);
-        setTimeout(function(){
-            _gameData = JSON.parse(sessionStorage.getItem("gameData"));
-            _self.init();
-            _self.startGame();
-        }, 5000);
+    _self.onNoDataDialogClosed = function(buttonNumber) {
+        switch (buttonNumber)
+        {
+            case 0: // pressed retry
+            {
+                _self.showLoadingIcon(CONSTANTS.strings.game.MESSAGE_QUESTIONS_LOADING);
+                _self.getSectionQuestions();// get new section data async
+                break;
+            }
+            case 1: // pressed back
+            {
+                _self.gotoHomePage();
+                break;
+            }
+            default :
+            {
+                _self.showLoadingIcon(CONSTANTS.strings.game.MESSAGE_QUESTIONS_LOADING);
+                _self.getSectionQuestions();// get new section data async
+                break;
+            }
+        }
     };
+
+    _self.notifyGameFinishedMessage = function (message) {
+        //alert(message);
+        if (typeof messageBox !== CONSTANTS.strings.global.UNDEFINED)
+        {
+            messageBox.show(
+                message,                                // message
+                _self.onGameFinishedDialogClosed,       // callback to invoke with index of button pressed
+                [CONSTANTS.strings.game.M_BTN_REPLAY,
+                 CONSTANTS.strings.game.M_BTN_NEXTGAME] // buttonLabels
+            );
+        }
+        else
+        {
+            alert(message);
+        }
+    };
+
+    _self.onGameFinishedDialogClosed = function (buttonIndex) {
+        if (buttonIndex === 1) // Next Section
+        {
+            // do not add _currentScore until go to next section
+            _totalScore += _currentScore;
+            _self.getSectionQuestions();// get new section data async
+        }
+        else // restart
+        {
+            _self.clearAllScreen();
+            // wait some time before restart
+            setTimeout(_self.startGame(), 2000);
+        }
+    };
+
+    _self.showLoadingIcon = function(message) {
+        // Show spinner dialog with message
+        if (typeof loading !== CONSTANTS.strings.global.UNDEFINED)
+        {
+            loading.show(message);
+        }
+        else
+        {
+            alert(message);
+        }
+    };
+
+    _self.hideLoadingIcon = function ()
+    {
+        // Hide spinner dialog
+        if (typeof loading !== CONSTANTS.strings.global.UNDEFINED)
+        {
+            loading.hide();
+        }
+    };
+
+    _self.gotoHomePage = function () {
+        navigation.onBackKeyDown();
+    };
+
 
 };

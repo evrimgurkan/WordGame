@@ -136,7 +136,12 @@ h1 {
 }
 
 .sideMenuButton {
-    background-image: url("../img/menu.png");
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    width: 24px;
+    height: 24px;
+    background-image: url("../img/back.svg");
 }
 
 #applicationContainer {
@@ -178,7 +183,7 @@ h1 {
 .progress-bar {
     margin: 0;
     padding: 0;
-    z-index: 99998;
+    z-index: 9998;
     box-shadow: 0 0 10px 0; /* Inherits the font color */
     height: 15px;
 
