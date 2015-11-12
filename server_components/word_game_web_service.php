@@ -17,7 +17,7 @@ $con = mysql_connect($server, $username, $password) or die ("Could not connect: 
 mysql_select_db($database, $con);
 
 #query section table
-$sql_section = "SELECT ss.needed_time AS S_TIME, ss.description AS S_DESC, ss.score_constant AS CONSTANT, ss.id AS S_ID, ss.question_count AS Q_COUNT
+$sql_section = "SELECT ss.needed_time AS S_TIME, COUNT(ss.id) AS S_COUNT, ss.description AS S_DESC, ss.score_constant AS CONSTANT, ss.id AS S_ID, ss.question_count AS Q_COUNT
 FROM tbl_section AS ss
 WHERE ss.id = ( 
 SELECT MIN( ss.id ) 
@@ -65,6 +65,7 @@ mysql_close($con);
 $result_array = array(S_TIME 	=> $section_array['S_TIME'],
 					  S_ID 	 	=> $section_array['S_ID'],
 					  S_DESC 	=> $section_array['S_DESC'],
+					  S_COUNT 	=> $section_array['S_COUNT'],
 					  S_CONST 	=> $section_array['CONSTANT'],
 					  Q_COUNT 	=> $section_array['Q_COUNT']);
 
