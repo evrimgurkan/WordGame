@@ -3,7 +3,7 @@ body {
     -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
     color: #333333;
-    font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+    font-family: 'Inder', cursive;
     font-size:12px;
     height:100%;
     margin:0px;
@@ -27,17 +27,18 @@ body {
     vertical-align: middle;
     font-size: xx-large;
     text-decoration: initial;
-    font-family: 'Sancreek', cursive;
+    font-family: 'hornswogglednormal';
 }
 
 .navigationContainer {
     text-align: center;
+    font-family: 'Inder', cursive;
 }
 
 #selectionButtons {
     text-align: center;
     margin-top: 10%;
-    font-family: 'Kaushan Script', cursive;
+    font-family: 'Inder', cursive;
     font-size: 150%;
 }
 
@@ -54,12 +55,21 @@ body {
     box-shadow: 0 0 10px 0 #3c5cff; /* Inherits the font color */
 }
 
-.logo {
+.logo p{
     margin-top: 25%;
-    font-size: 50px;
+    font-size: 600%;
     color: orangered;
     text-align: center;
-    font-family: 'Fontdiner Swanky', cursive;
+    font-family: 'hornswogglednormal', cursive;
+}
+
+.release {
+    font-size: 15px;
+    text-align: right;
+    font-family: 'Inder', cursive;
+    color: white;
+    position: absolute;
+    margin-left: 70%;
 }
 
 .ofllineSeperation {
@@ -68,7 +78,7 @@ body {
 
 .ofllineSeperation span{
     text-align: center;
-    font-family: 'Kaushan Script', cursive;
+    font-family: 'Inder', cursive;
     font-size: 200%;
     color: orangered;
 }
@@ -95,7 +105,7 @@ body {
     text-align: center;
     margin-top: 10%;
     margin-right: 2%;
-    font-family: 'Kaushan Script', cursive;
+    font-family: 'Inder', cursive;
     font-size: 200%;
     text-decoration: none;
     border-radius: 2px;
@@ -121,7 +131,7 @@ body {
     box-sizing: border-box;
 }
 html, button .pure-g [class *= "pure-u"] {
-    font-family: sans-serif;
+    font-family: 'Inder', cursive;
     font-weight: 100;
     letter-spacing: 0.01em;
 }
@@ -156,6 +166,12 @@ button{
     }
 }
 
+@media screen and (min-width: 700px){
+    .logo {
+        font-size: 900%;
+    }
+}
+
 @media screen and (min-width: 600px)  and (min-height: 900px) /* Mobile */ {
     .navigationContainer {
         font-size: 150%;
@@ -166,7 +182,5 @@ button{
     #menuBanner {
         height: 90px;
     }
-    .logo {
-        font-size: 600%;
-    }
+
 }

@@ -11,8 +11,11 @@
     <link href='https://fonts.googleapis.com/css?family=Fontdiner+Swanky' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Sancreek' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+
+    <link href='https://fonts.googleapis.com/css?family=Inder' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="css/homePage.css" />
     <link rel="stylesheet" type="text/css" href="css/notification.css" />
+    <link rel="stylesheet" type="text/css" href="css/fonts.css" />
 
     <script src="js/jquery-1.11.3.min.js"></script>
 
@@ -23,6 +26,7 @@
     <script type="text/javascript" src="js/connection.js"></script>
     <script type="text/javascript" src="js/navigate.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/admob.js"></script>
     <script type="text/javascript">
         function onLoad() {
             document.addEventListener("deviceready", onDeviceReady, false);
@@ -35,16 +39,22 @@
             //  _application.getGameData(1);
             navigation.initialize();
             connection.initialize();
+
+            ADMOB.initialize();
         }
 
     </script>
     <title>Ana Sayfa</title>
 </head>
 <body onload="onLoad()">
+<div class="release">
+    <span>Beta</span>
+</div>
     <div class="logo">
         <p>
-            Word Game
+            bilgeç
         </p>
+
     </div>
     <div class="navigationContainer">
         <button id="startGame" class="button-secondary pure-button" onclick="navigation.navigateToPage(this.id)">Oyuna Başla</button>

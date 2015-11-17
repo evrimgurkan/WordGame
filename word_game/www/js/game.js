@@ -297,6 +297,7 @@ var Game = function () {
     };
 
     _self.onGameFinishedDialogClosed = function (buttonIndex) {
+
         if (buttonIndex === 1) // Next Section
         {
             // do not add _currentScore until go to next section

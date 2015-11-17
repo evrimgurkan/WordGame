@@ -25,5 +25,4 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
-    <framework src="com.google.android.gms:play-services-ads:+" />
 </widget>

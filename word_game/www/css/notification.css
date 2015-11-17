@@ -70,7 +70,8 @@
     display: block;
     height: 60px;
     line-height: 60px;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
+    font-family: 'Inder', cursive;
     color: #FFF;
     -webkit-transition: background-color 0.2s;
     -moz-transition: background-color 0.2s;

@@ -3,7 +3,7 @@ body {
     -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
     color: #333333;
-    font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+    font-family: 'Inder', cursive;
     font-size:12px;
     height:100%;
     margin:0px;
@@ -24,14 +24,14 @@ body {
     color: white;
     text-align: center;
     vertical-align: middle;
-    font-size: xx-large;
+    font-size: 350%;
     text-decoration: initial;
-    font-family: 'Sancreek', cursive;
+    font-family: 'hornswogglednormal';
 }
 .sideMenuButton {
     position: absolute;
     left: 10px;
-    top: 10px;
+    top: 15px;
     width: 24px;
     height: 24px;
     background-image: url("../img/back.svg");

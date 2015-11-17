@@ -19,7 +19,7 @@ var navigation = {
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'backbutton', and 'online'.
     bindEvents: function() {
-        document.addEventListener(CONSTANTS.events.navigation.BACK_BUTTON, this.onBackKeyDown, false);        // Register the event listener
+        document.addEventListener(CONSTANTS.events.navigation.BACK_BUTTON, this.onExitApplication, false);        // Register the event listener
         document.addEventListener(CONSTANTS.events.navigation.MENU_BUTTON, this.onMenuKeyDown, false);
     },
 
@@ -27,7 +27,7 @@ var navigation = {
     },
 
     onBackKeyDown: function() {
-        navigator.app.exitApp();
+        history.back();
         //alert("back basıldı _previousPage : " +  _previousPage);
         //if (_previousPage !== CONSTANTS.strings.global.UNDEFINED)
         //{
@@ -43,10 +43,7 @@ var navigation = {
     },
 
     onExitApplication : function (buttonIndex){
-        if (buttonIndex === 0) // Exit
-        {
             navigator.app.exitApp();
-        }
     },
 
     navigateToPage: function (buttonID) {
@@ -70,6 +67,7 @@ var navigation = {
             case CONSTANTS.strings.navigation.CASE_GOTO_HOWTO_PAGE:
             {
                 window.location = CONSTANTS.strings.navigation.LINK_HOWTO_PAGE;
+                //window.location.href = '#pagetwo'
                 break;
             }
             default :

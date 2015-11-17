@@ -20,7 +20,7 @@ body {
         color-stop(0.51, #E4E4E4)
     );
     background-attachment:fixed;*/
-    font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+    font-family: 'Inder', cursive;
     font-size:12px;
     height:100%;
     margin:0px;
@@ -113,15 +113,15 @@ h1 {
     color: white;
     text-align: center;
     vertical-align: middle;
-    font-size: xx-large;
+    font-size: 350%;
     text-decoration: initial;
-    font-family: 'Sancreek', cursive;
+    font-family: 'hornswogglednormal';
 }
 
 .sideMenuButton {
     position: absolute;
     left: 10px;
-    top: 10px;
+    top: 15px;
     width: 24px;
     height: 24px;
     background-image: url("../img/back.svg");
@@ -135,7 +135,7 @@ h1 {
 #descriptionArea {
     margin-top: 5%;
     text-align: center;
-    font-family: 'Sancreek', cursive;
+    font-family: 'Inder', cursive;
     font-size: 150%;
     color: #FBB650;
 }
@@ -177,7 +177,7 @@ h1 {
     margin-top: 60%;
     text-align: center;
     font-size: 200%;
-    font-family: 'Kaushan Script', cursive;
+    font-family: 'Inder', cursive;
 }
 
 #questionArea {
@@ -185,7 +185,7 @@ h1 {
     /*border-radius: 50px;*/
     line-height: 150%;
     text-align: center;
-    font-family: 'Kaushan Script', cursive;
+    font-family: 'Inder', cursive;
     font-size: 200%;
     padding-bottom: 5%;
     padding-top: 5%;
@@ -193,6 +193,8 @@ h1 {
     background: -o-linear-gradient(#E1E846, #fbb650); /* For Opera 11.1 to 12.0 */
     background: -moz-linear-gradient(#E1E846, #fbb650); /* For Firefox 3.6 to 15 */
     background: linear-gradient(#E1E846, #fbb650); /* Standard syntax */
+    box-shadow: rgb(111, 219, 111) 0px 0px 20px 0px;
+    background-color: #E4E147;
 }
 
 
@@ -205,15 +207,16 @@ h1 {
 }
 #notificationDialog span {
     font-size: xx-large;
-    font-family: serif;
+    font-family: 'Inder', cursive;
     font-weight: bold;
 }
 
 #selectionButtons {
     text-align: center;
     margin-top: 10%;
-    font-family: 'Kaushan Script', cursive;
+    font-family: 'Inder', cursive;
     font-size: 150%;
+    line-height: 500%;
 }
 
 #leftButton {
@@ -275,7 +278,7 @@ h1 {
 }
 
 html, button .pure-g [class *= "pure-u"] {
-    font-family: sans-serif;
+    font-family: 'Inder', cursive;
     font-weight: 100;
     letter-spacing: 0.01em;
 }
@@ -319,7 +322,7 @@ button{
     margin-top: 15px;
     color: white;
     z-index: 2;
-    font-family: 'Kaushan Script', cursive;
+    font-family: 'Inder', cursive;
     font-size: 200%;
 }
 
@@ -404,7 +407,7 @@ svg {
 
     #questionArea {
         margin-top: 3%;
-        font-size: 150%;
+        font-size: 175%;
         padding-bottom: 5%;
         padding-top: 5%;
     }
@@ -433,12 +436,13 @@ svg {
 @media screen and (width: 320px)  and (height: 480px) /* Mobile */ {
     #descriptionArea {
         margin-top: 3%;
-        font-size: 100%;
+        font-size: 125%;
     }
 
     #selectionButtons{
         margin-top: 3%;
-        font-size: 125%;
+        line-height: 500%;
+        font-size: 150%;
     }
 }
 
