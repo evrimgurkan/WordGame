@@ -9,8 +9,9 @@ var Game = function () {
     var _application = new Application(_self);
     var _generatedSectionID;
     var _timerInterval,
-        _resetGameCount,
+        _wrongAnswerCount,
         _currentTime,
+        _resetGameCount = 0,
         _currentScore = 0,
         _totalScore = 0,
         _sectionCount = 1; // TODO: should be increased
@@ -61,7 +62,7 @@ var Game = function () {
         _self.showLoadingIcon(CONSTANTS.strings.game.MESSAGE_QUESTIONS_LOADING);
         _self.currentGameState =  _gameStates.continue;
         _self.currentQuestionNo = 1;
-        _resetGameCount = 0;
+        _wrongAnswerCount = 0;
         _currentTime = 0;
         _currentScore = 0;
         _generatedSectionID = 1;
@@ -215,7 +216,7 @@ var Game = function () {
         }
         else {
             _isAnswerCorrect = false;
-            _resetGameCount++;
+            _wrongAnswerCount++;
         }
 
         if (_self.currentGameState === _gameStates.continue) {
@@ -270,16 +271,20 @@ var Game = function () {
     _self.calculateScore = function () {
 
         var calculatedScoreConstant = _gameData.scoreMultiplier;
-        if (_gameData.scoreMultiplier < (_resetGameCount + 4))
-        {
-            calculatedScoreConstant  = 4;
-        }
-        else
-        {
-            calculatedScoreConstant = (_gameData.scoreMultiplier - _resetGameCount);
-        }
+        //if (_gameData.scoreMultiplier < (_wrongAnswerCount + 4))
+        //{
+        //    calculatedScoreConstant  = 4;
+        //}
+        //else
+        //{
+        //    calculatedScoreConstant = (_gameData.scoreMultiplier - _wrongAnswerCount - _resetGameCount * 3);
+        //}
         _currentScore = (calculatedScoreConstant * _self.currentQuestionNo) + _currentTime;
-
+        _currentScore -= (_wrongAnswerCount * 2) + (_resetGameCount * 3);
+        if (_currentScore <= 0 )
+        {
+            _currentScore = 0;
+        }
         // show total score on screen,
         // let the user to increase its score
         // if it wants to go next, then add _currentScore to _totalScore
@@ -387,15 +392,42 @@ var Game = function () {
 
         if (buttonIndex === 1) // Next Section
         {
-            // do not add _currentScore until go to next section
-            _totalScore += _currentScore;
-            _self.getSectionQuestions();// get new section data async
+            _self.goToNextSection();
         }
         else // restart
         {
-            _self.clearAllScreen();
-            // wait some time before restart
-            setTimeout(_self.startGame(), 2000);
+            _self.showScoreCalculationInfo();
+        }
+    };
+
+    _self.restartCurrentSection = function () {
+
+        _self.clearAllScreen();
+        _resetGameCount++;
+        // wait some time before restart
+        setTimeout(_self.startGame(), 2000);
+    };
+
+    _self.goToNextSection = function () {
+        // do not add _currentScore until go to next section
+        _totalScore += _currentScore;
+        _self.getSectionQuestions();// get new section data async
+        _resetGameCount = 0;
+    };
+
+    _self.showScoreCalculationInfo = function (){
+        if (typeof messageBox !== CONSTANTS.strings.global.UNDEFINED)
+        {
+            var message =CONSTANTS.strings.game.MESSAGE_SCORE_CALCULATION_INFO;
+            messageBox.showInfoDialog(
+                message,                                 // message
+                _self.restartCurrentSection,                      // callback to invoke with index of button pressed
+                [CONSTANTS.strings.game.M_BTN_OKEY]     // buttonLabels
+            );
+        }
+        else
+        {
+            alert(message);
         }
     };
 

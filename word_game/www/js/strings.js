@@ -34,8 +34,10 @@ var CONSTANTS = {
              MESSAGE_QUESTIONS_LOADING : 'Sorular Yükleniyor...',
              M_BTN_REPLAY : 'Yeniden Oyna',
              M_BTN_NEXTGAME : 'Sonraki',
+             M_BTN_OKEY : 'Tamam',
              MESSAGE_CONTINUE_GAME : '5 sn içinde oyun devam edecek.',
-             MESSAGE_CALCULATING_SCORES : 'Puanınız hesaplanıyor...'
+             MESSAGE_CALCULATING_SCORES : 'Puanınız hesaplanıyor...',
+             MESSAGE_SCORE_CALCULATION_INFO : 'Unutmayın yanlış cevap vermek ve aynı soru grubunu yeniden oynamak puanınızı düşürecektir'
         },
 
         application: {
