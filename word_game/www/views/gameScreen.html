@@ -50,6 +50,11 @@
         <script type="text/javascript" src="../js/load_questions.js"></script>-->
 
         <script type="text/javascript">
+            document.addEventListener("deviceready", onDeviceReady, false);
+
+            function onDeviceReady() {
+                alert("device ready came")
+            }
             navigation.initialize();
             navigation.setPreviousPage('../index.html');
 //            ADMOB.createAdvBanner();
@@ -63,9 +68,7 @@
             <span class="appName">bilgeç</span>
         </div>
         <div id="applicationContainer">
-            <div id="descriptionArea">
-
-            </div>
+            <div id="stepValue">1 / 40</div>
             <div id="stepContainer">
                 <div class="cont">
                     <div id="progressBar" class="progress-bar" ></div>
@@ -81,10 +84,8 @@
                     </g>
                 </svg>
             </div>
-            <div id="stepValue">1 / 40</div>
-            <div id="questionArea">
-
-            </div>
+            <div id="descriptionArea"></div>
+            <div id="questionArea"></div>
             <div id="notificationDialog">
                 <span>Geri Sayım 4,3,2,1</span>
             </div>
@@ -99,6 +100,16 @@
         <div class="cd-popup" role="alert">
             <div class="cd-popup-container">
                 <div class="loader disable">Loading...</div>
+                <div class="scores">
+                    <ul id="scores-list">
+                        <!--<li style="text-align: center;">
+                            <span >PUANLAR</span>
+                        </li>
+                        <li>
+                            <span>1 - </span><p>123</p>
+                        </li>-->
+                    </ul>
+                </div>
                 <p class="message-area"></p>
                 <ul class="cd-buttons">
                     <!--<li><a id="popupLeftButton" onclick='messageBox.onButtonClicked(this.id)'>Yes</a></li>-->

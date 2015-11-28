@@ -35,7 +35,7 @@ var navigation = {
         //}
         //else // in home page, exit app
         //{
-        //    messageBox.show(CONSTANTS.strings.navigation.MESSAGE_EXIT_APPLICATION,
+        //    messageBox.showInfoDialog(CONSTANTS.strings.navigation.MESSAGE_EXIT_APPLICATION,
         //                    navigation.onExitApplication(),
         //                    [CONSTANTS.strings.navigation.M_BTN_EXIT_APPLICATION_CONFIRM,
         //                     CONSTANTS.strings.navigation.M_BTN_EXIT_APPLICATION_CANCEL]);
@@ -58,7 +58,7 @@ var navigation = {
                 }
                 else
                 {
-                    messageBox.show(CONSTANTS.strings.navigation.MESSAGE_NO_CONNECTION,
+                    messageBox.showInfoDialog(CONSTANTS.strings.navigation.MESSAGE_NO_CONNECTION,
                                     navigation.navigateToPage(buttonID),
                                     [CONSTANTS.strings.navigation.M_BTN_RETRY]);
                 }

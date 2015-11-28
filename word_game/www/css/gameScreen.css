@@ -133,7 +133,7 @@ h1 {
 }
 
 #descriptionArea {
-    margin-top: 5%;
+    margin-top: 60%;
     text-align: center;
     font-family: 'Inder', cursive;
     font-size: 150%;
@@ -174,7 +174,6 @@ h1 {
 
 #stepValue {
     color: white;
-    margin-top: 60%;
     text-align: center;
     font-size: 200%;
     font-family: 'Inder', cursive;
@@ -215,14 +214,14 @@ h1 {
     text-align: center;
     margin-top: 10%;
     font-family: 'Inder', cursive;
-    font-size: 150%;
+    font-size: 175%;
     line-height: 500%;
 }
 
 #leftButton {
     margin-right: 10%;
     background-color: #3c5cff;
-    box-shadow: 0 0 10px 0 #3c5cff; /* Inherits the font color */
+    box-shadow: 0 0 30px 0 #3c5cff; /* Inherits the font color */
     color: white;
     outline: 0;
 }
@@ -230,7 +229,7 @@ h1 {
 #rightButton {
     background-color: #3c5cff;
     color: white;
-    box-shadow: 0 0 10px 0 #3c5cff; /* Inherits the font color */
+    box-shadow: 0 0 30px 0 #3c5cff; /* Inherits the font color */
     outline: 0;
 }
 
@@ -341,11 +340,11 @@ svg {
 
 @media screen  and (max-width: 979px)  and (min-width: 501px) /* Tablet */ {
     #descriptionArea {
+        margin-top: 63%;
         font-size: 200%;
     }
 
     #stepValue {
-        margin-top: 60%;
         font-size: 250%;
     }
 
@@ -391,8 +390,9 @@ svg {
     }
 
     #descriptionArea {
-        margin-top: 3%;
+        margin-top: 75%;
         font-size: 125%;
+        margin-bottom: 4%;
     }
 
     #timerContainer {
@@ -401,7 +401,7 @@ svg {
     }
 
     #stepValue {
-        margin-top: 70%;
+        margin-bottom: 3%;
         font-size: 150%;
     }
 
@@ -418,9 +418,10 @@ svg {
 
 }
 @media screen and  (max-height: 500px){
-    #stepValue {
-        margin-top: 67%;
+    #descriptionArea {
+        margin-top: 70%;
         font-size: 125%;
+        margin-bottom: 4%;
     }
 
 }
@@ -434,8 +435,7 @@ svg {
 }
 
 @media screen and (width: 320px)  and (height: 480px) /* Mobile */ {
-    #descriptionArea {
-        margin-top: 3%;
+    #stepValue {
         font-size: 125%;
     }
 
@@ -453,7 +453,7 @@ svg {
     }
 
     #stepValue {
-        margin-top: 80%;
+        margin-bottom: 3%;
         font-size: 175%;
     }
 
@@ -468,7 +468,8 @@ svg {
         margin-top: 5%;
     }
     #descriptionArea {
-        margin-top: 8%;
+        margin-top: 85%;
+        margin-bottom: 4%;
     }
 }
 
@@ -478,8 +479,8 @@ svg {
         margin-top: 10%;
     }
 
-    #stepValue {
-        margin-top: 70%;
+    #descriptionArea {
+        margin-top: 75%;
     }
 
     #questionArea {
@@ -499,12 +500,13 @@ svg {
 
 @media screen and (min-height: 500px) and (max-height: 1000px) and (min-width: 400px)/* Mobile */ {
     #stepValue {
-        margin-top: 75%;
+        margin-bottom: 3%;
         font-size: 200%;
     }
 
     #descriptionArea {
-        margin-top: 8%;
+        margin-top: 80%;
+        margin-bottom: 4%;
     }
 
     #selectionButtons {

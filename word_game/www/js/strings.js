@@ -24,6 +24,9 @@ var CONSTANTS = {
 
              MESSAGE_TIME_IS_UP : 'Zaman Tükendi!',
              MESSAGE_COMPLETED_QUESTIONS : 'Tebrikler, Tüm soruları cevapladınız.',
+             MESSAGE_SCORE_ORDER_PREFIX : ' kişi arasından ',
+             MESSAGE_SCORE_ORDER_LAST : 'sonuncu oldunuz. ',
+             MESSAGE_SCORE_ORDER_POSTFIX : '. oldunuz. ',
              MESSAGE_NO_DATA : 'Sorular yüklenemedi, internet bağlantınızı kontrol edin ve yeniden deneyin.',
              MESSAGE_SCORE : ' Puanınız : ',
              M_BTN_RETRY : 'Yeniden Dene',
@@ -31,12 +34,14 @@ var CONSTANTS = {
              MESSAGE_QUESTIONS_LOADING : 'Sorular Yükleniyor...',
              M_BTN_REPLAY : 'Yeniden Oyna',
              M_BTN_NEXTGAME : 'Sonraki',
-             MESSAGE_CONTINUE_GAME : '5 sn içinde oyun devam edecek.'
+             MESSAGE_CONTINUE_GAME : '5 sn içinde oyun devam edecek.',
+             MESSAGE_CALCULATING_SCORES : 'Puanınız hesaplanıyor...'
         },
 
         application: {
             MESSAGE_CONTINUE_GAME : '5 sn içinde oyun devam edecek.',
-            LINK_WEB_SERVICE : 'http://46.101.247.199/word_game_web_service.php?s_id=',
+            LINK_WEB_SERVICE_QUESTIONS : 'http://46.101.247.199/word_game_questions.php',
+            LINK_WEB_SERVICE_SCORE : 'http://46.101.247.199/word_game_scores.php',
             LEFT_BUTTON_ERROR_VALUE : ' ',
             RIGHT_BUTTON_ERROR_VALUE : ' ',
             ERROR_DECRIPTION : 'Hata oluştu!'
@@ -58,6 +63,10 @@ var CONSTANTS = {
             LINK_HOWTO_PAGE : 'views/howto.html',
             MESSAGE_NO_CONNECTION : 'Lütfen internet bağlantınızı kontrol edip tekrar deneyiniz!',
             M_BTN_RETRY : 'Tekrar Dene'
+        },
+
+        notification : {
+            MESSAGE_SCORE_LIST_HEADER : 'PUANLAR'
         }
     },
 

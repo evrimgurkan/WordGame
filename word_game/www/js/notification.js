@@ -5,16 +5,92 @@
 var messageBox = {
 
     _callback : undefined,
+    isScoreDialog : false,
+
+    dialogType : {
+        info: 0,
+        score: 1
+    },
+
+    parameters : {
+        message : 'message',
+        onClickedCallback : 'onClickedCallback',
+        buttonLabels : 'buttonLabels',
+        scores : 'scores'
+    },
+
+    show : function (dialogType, iParameters) {
+        if (typeof dialogType !== CONSTANTS.strings.global.UNDEFINED &&
+            typeof iParameters !== CONSTANTS.strings.global.UNDEFINED)
+        {
+            switch (dialogType)
+            {
+                case messageBox.dialogType.info:
+                {
+                    messageBox.showInfoDialog(iParameters.message,
+                                              iParameters.onClickedCallback,
+                                              iParameters.buttonLabels);
+                    break;
+                }
+                case  messageBox.dialogType.score:
+                {
+                    messageBox.showScoreDialog(iParameters.message,
+                                               iParameters.onClickedCallback,
+                                               iParameters.buttonLabels,
+                                               iParameters.scores);
+                    break;
+                }
+                default :
+                {
+                    messageBox.showInfoDialog(iParameters.message,
+                                              iParameters.onClickedCallback,
+                                              iParameters.buttonLabels);
+                    break;
+                }
+            }
+        }
+
+    },
+
     // callback to invoke with index of button pressed
-    show : function (message, onClickedCallback, buttonLabels) {
+    showInfoDialog : function (message, onClickedCallback, buttonLabels) {
         messageBox._callback = onClickedCallback;
         messageBox.generateInfoDialog(message, buttonLabels);
+    },
+
+    showScoreDialog : function (message, onClickedCallback, buttonLabels,scores) {
+        messageBox._callback = onClickedCallback;
+        messageBox.generateScoreDialog(message, buttonLabels,scores);
     },
 
     generateInfoDialog : function (message, buttonLabels) {
         $('.cd-popup-container .message-area').text(message);
         messageBox.generateButtons(buttonLabels);
         $('.cd-popup').addClass('visible');
+        messageBox.isScoreDialog = false;
+    },
+
+    generateScoreDialog : function (message, buttonLabels,scores) {
+        messageBox.generateScoreTable(scores);
+        $('.cd-popup-container .message-area').text(message);
+        messageBox.generateButtons(buttonLabels);
+        $('.cd-popup').addClass('visible');
+        $('.scores').addClass('visible');
+        messageBox.isScoreDialog = true;
+    },
+
+    generateScoreTable : function(scores) {
+        $('#scores-list').empty();
+        messageBox.createScoreHeader();
+        var length = (Object.keys(scores.scoresList).length < 9) ? Object.keys(scores.scoresList).length : 9;
+        if (length > 0)
+        {
+            for (var i = 0;i < length ;i++)
+            {
+                var score = scores.scoresList[i];
+                messageBox.createScoreRow(i + 1,score);
+            }
+        }
     },
 
     generateButtons : function (labels) {
@@ -44,6 +120,29 @@ var messageBox = {
         }
     },
 
+    createScoreRow : function (rowCount,score){
+        //TODO: Do not get score-list for every row
+        var scoreList = $('#scores-list');
+        var li = $('<li/>')
+            .appendTo(scoreList);
+        var el_span = $('<span/>')
+            .html(rowCount + ' - ')
+            .appendTo(li);
+        var el_p = $('<p/>')
+            .html(score)
+            .appendTo(li);
+    },
+
+    createScoreHeader : function () {
+        var scoreList = $('#scores-list');
+        var li = $('<li/>')
+            .appendTo(scoreList);
+        var el_span = $('<span/>')
+            .attr("style", 'text-align: center')
+            .html(CONSTANTS.strings.notification.MESSAGE_SCORE_LIST_HEADER)
+            .appendTo(li);
+    },
+
     createButton : function (buttonID,htmlText) {
 
         var buttonList = $('.cd-buttons');
@@ -61,6 +160,11 @@ var messageBox = {
         {
             var returnIndex;
             $('.cd-popup').removeClass('visible');
+            if (messageBox.isScoreDialog)
+            {
+                $('#scores-list').empty();
+                $('.scores').removeClass('visible');
+            }
 
             if (buttonId === 'popupLeftButton')
             {

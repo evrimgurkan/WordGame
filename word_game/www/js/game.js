@@ -5,6 +5,7 @@
 var Game = function () {
 
     var _self = this;
+    var _userID = -1;
     var _application = new Application(_self);
     var _generatedSectionID;
     var _timerInterval,
@@ -13,7 +14,7 @@ var Game = function () {
         _currentScore = 0,
         _totalScore = 0,
         _sectionCount = 1; // TODO: should be increased
-
+//TODO: calculate score
     var _gameStates = {
         time_is_up: 0,
         section_completed: 1,
@@ -25,16 +26,28 @@ var Game = function () {
 
     _self.init = function (){
         _totalScore = 0;
+        _currentScore = 0;
         _application.bindEvents();
         _self.getSectionQuestions();
+        _userID = _self.getGeneratedUSerID();
+    };
+
+    _self.getGeneratedUSerID = function () {
+        var user_id = Math.floor((Math.random() * 900000) + 100000);
+        return user_id;
     };
 
     _self.getSectionQuestions = function () {
 
         _self.showLoadingIcon(CONSTANTS.strings.game.MESSAGE_QUESTIONS_LOADING);
-        // generate random value between 1 and section count
-        _generatedSectionID = Math.floor((Math.random() * _sectionCount) + 1);
+        _generatedSectionID = _self.getNextSectionID();
         _application.getGameData(_generatedSectionID);
+    };
+
+    _self.getNextSectionID = function () {
+        // generate random value between 1 and section count
+        var id = Math.floor((Math.random() * _sectionCount) + 1);
+        return id;
     };
 
     _self.onSectionQuestionsLoaded = function (data) {
@@ -97,18 +110,51 @@ var Game = function () {
 
             if (i == time) {
                 _self.currentGameState = _gameStates.time_is_up;
-                var score = _self.calculateScore();
-                var message = CONSTANTS.strings.game.MESSAGE_TIME_IS_UP  + CONSTANTS.strings.game.MESSAGE_SCORE + score ;
+                // no need to show score when time is up
+                //var score = _self.calculateScore();
+                _self.stopTimer();
+                var message = CONSTANTS.strings.game.MESSAGE_TIME_IS_UP;//  + CONSTANTS.strings.game.MESSAGE_SCORE + score ;
                 _self.notifyGameFinishedMessage(message);
             }
             else if (_self.currentGameState === _gameStates.section_completed) {
-                var score = _self.calculateScore();
-                var message = CONSTANTS.strings.game.MESSAGE_COMPLETED_QUESTIONS  + CONSTANTS.strings.game.MESSAGE_SCORE + score ;
-                _self.notifyGameFinishedMessage(message);
+                _self.stopTimer();
+                _self.sectionCompleted();
             }
 
             i++;
         }, 1000);
+    };
+
+    _self.sectionCompleted = function () {
+        var score = _self.calculateScore();
+        // send score and wait for getting scores from webservice
+        _self.getUserScoreOrder(score);
+        _self.showLoadingIcon(CONSTANTS.strings.game.MESSAGE_CALCULATING_SCORES);
+    };
+
+    _self.onScoreInfoLoaded = function (score_info) {
+        var total_scores_count = parseInt(score_info.section_scores_count) + 1;
+        var current_order = Object.keys(score_info.scoresList).length + 1;
+        var message = "";
+        if (total_scores_count === current_order) // be last score
+        {
+            message = total_scores_count + CONSTANTS.strings.game.MESSAGE_SCORE_ORDER_PREFIX  +
+                CONSTANTS.strings.game.MESSAGE_SCORE_ORDER_LAST;
+        }
+        else
+        {
+            message = total_scores_count + CONSTANTS.strings.game.MESSAGE_SCORE_ORDER_PREFIX  +
+                current_order +
+                CONSTANTS.strings.game.MESSAGE_SCORE_ORDER_POSTFIX +
+                CONSTANTS.strings.game.MESSAGE_SCORE + _currentScore ;
+
+        }
+        _self.notifyGameScores(message,score_info);
+    };
+
+    _self.showNoScoreInfoDialog = function () {
+        var message = CONSTANTS.strings.game.MESSAGE_COMPLETED_QUESTIONS  + CONSTANTS.strings.game.MESSAGE_SCORE + _currentScore ;
+        _self.notifyGameFinishedMessage(message);
     };
 
     _self.stopTimer = function() {
@@ -179,7 +225,7 @@ var Game = function () {
         _self.updateDisplay(_isAnswerCorrect, buttonID);
         setTimeout(function(){
             _self.clearScreenChanges(buttonID)
-        }, 200);
+        }, 100);
     };
 
     _self.questionUpdate = function (answer) {
@@ -198,7 +244,7 @@ var Game = function () {
     _self.clearScreenChanges = function (buttonID) {
 
         document.getElementById(buttonID).style.backgroundColor = CONSTANTS.strings.game.COLOR_BLUE; // blue
-        document.getElementById(buttonID).style.boxShadow = "0 0 10px 0 " + CONSTANTS.strings.game.COLOR_BLUE;
+        document.getElementById(buttonID).style.boxShadow = "0 0 30px 0 " + CONSTANTS.strings.game.COLOR_BLUE;
     };
 
     _self.updateDisplay = function (answer, buttonID) {
@@ -206,11 +252,11 @@ var Game = function () {
         _self.updateStep();
         if (answer === true) {
             document.getElementById(buttonID).style.backgroundColor = CONSTANTS.strings.game.COLOR_GREEN; // green
-            document.getElementById(buttonID).style.boxShadow = "0 0 10px 0 " + CONSTANTS.strings.game.COLOR_GREEN;
+            document.getElementById(buttonID).style.boxShadow = "0 0 30px 0 " + CONSTANTS.strings.game.COLOR_GREEN;
         }
         else {
             document.getElementById(buttonID).style.backgroundColor = CONSTANTS.strings.game.COLOR_RED;
-            document.getElementById(buttonID).style.boxShadow = "0 0 10px 0 " + CONSTANTS.strings.game.COLOR_RED;
+            document.getElementById(buttonID).style.boxShadow = "0 0 30px 0 " + CONSTANTS.strings.game.COLOR_RED;
         }
     };
 
@@ -222,8 +268,6 @@ var Game = function () {
     };
 
     _self.calculateScore = function () {
-
-       _self.stopTimer();
 
         var calculatedScoreConstant = _gameData.scoreMultiplier;
         if (_gameData.scoreMultiplier < (_resetGameCount + 4))
@@ -239,7 +283,14 @@ var Game = function () {
         // show total score on screen,
         // let the user to increase its score
         // if it wants to go next, then add _currentScore to _totalScore
-        return _totalScore + _currentScore;
+        //return _totalScore + _currentScore;
+
+        // do not calculate total score for now
+        return _currentScore;
+    };
+
+    _self.getUserScoreOrder = function (score) {
+        _application.getScoreInfo(_generatedSectionID,_userID,score);
     };
 
     _self.showNoDataDialog = function (){
@@ -247,7 +298,13 @@ var Game = function () {
         var message = CONSTANTS.strings.game.MESSAGE_NO_DATA;
         if (typeof messageBox !== CONSTANTS.strings.global.UNDEFINED) {
 
-            messageBox.show(message, _self.onNoDataDialogClosed, [CONSTANTS.strings.game.M_BTN_RETRY,
+            //messageBox.show(messageBox.dialogType.info, {message : message,
+            //                                             onClickedCallback : _self.onNoDataDialogClosed,
+            //                                             buttonLabels : [CONSTANTS.strings.game.M_BTN_RETRY,
+            //                                                             CONSTANTS.strings.game.M_BTN_BACK],
+            //                                             });
+
+            messageBox.showInfoDialog(message, _self.onNoDataDialogClosed, [CONSTANTS.strings.game.M_BTN_RETRY,
                                                                   CONSTANTS.strings.game.M_BTN_BACK]);
         }
         else
@@ -283,12 +340,42 @@ var Game = function () {
         //alert(message);
         if (typeof messageBox !== CONSTANTS.strings.global.UNDEFINED)
         {
-            messageBox.show(
-                message,                                // message
-                _self.onGameFinishedDialogClosed,       // callback to invoke with index of button pressed
+            messageBox.showInfoDialog(
+                message,                                 // message
+                _self.onGameFinishedDialogClosed,        // callback to invoke with index of button pressed
                 [CONSTANTS.strings.game.M_BTN_REPLAY,
                  CONSTANTS.strings.game.M_BTN_NEXTGAME] // buttonLabels
             );
+        }
+        else
+        {
+            alert(message);
+        }
+    };
+
+    _self.notifyGameScores = function (message,scores) {
+        //alert(message);
+        if (typeof messageBox !== CONSTANTS.strings.global.UNDEFINED)
+        {
+            if (scores.scoresList.length > 0)
+            {
+                messageBox.showScoreDialog(
+                    message,                                 // message
+                    _self.onGameFinishedDialogClosed,        // callback to invoke with index of button pressed
+                    [CONSTANTS.strings.game.M_BTN_REPLAY,
+                        CONSTANTS.strings.game.M_BTN_NEXTGAME], // buttonLabels
+                    scores
+                );
+            }
+            else // if score is highest
+            {
+                messageBox.showInfoDialog(
+                    message,                                 // message
+                    _self.onGameFinishedDialogClosed,        // callback to invoke with index of button pressed
+                    [CONSTANTS.strings.game.M_BTN_REPLAY,
+                        CONSTANTS.strings.game.M_BTN_NEXTGAME] // buttonLabels
+                );
+            }
         }
         else
         {
@@ -336,6 +423,5 @@ var Game = function () {
     _self.gotoHomePage = function () {
         navigation.onBackKeyDown();
     };
-
 
 };

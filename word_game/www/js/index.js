@@ -10,12 +10,26 @@ var Application = function (iGame){
     _self.getGameData = function (sectionId) {
 
         $.ajax({
-            url: CONSTANTS.strings.application.LINK_WEB_SERVICE + sectionId,
+            url: CONSTANTS.strings.application.LINK_WEB_SERVICE_QUESTIONS + "?s_id="+sectionId,
             dataType: 'jsonp',
             jsonp: 'jsoncallback',
             timeout: 10000,
             success: gameData,
-            error: ajaxErrorHandle
+            error: ajaxErrorHandleQuestions
+        });
+    };
+
+    _self.getScoreInfo = function (sectionId,userId,score) {
+
+        var _url = CONSTANTS.strings.application.LINK_WEB_SERVICE_SCORE + "?s_id=" + sectionId +
+                   "&user_id=" + userId + "&score=" + score;
+        $.ajax({
+            url: _url ,
+            dataType: 'jsonp',
+            jsonp: 'jsoncallback',
+            timeout: 10000,
+            success: scoreInfo,
+            error: ajaxErrorHandleScore
         });
     };
 
@@ -43,6 +57,32 @@ var Application = function (iGame){
         setTimeout(loading.hide(), 5000);
     };
 
+    var scoreInfo = function (score_data) {
+        var result_data = {};
+
+        result_data.section_scores_count = score_data['SECTION_SCORES_COUNT'];
+        result_data.scoresList = [];
+
+        for (var i = 0; i < score_data['SCORES'].length;i++)
+        {
+            result_data.scoresList[i] = score_data['SCORES'][i];
+        }
+        _game.hideLoadingIcon();
+        _game.onScoreInfoLoaded(result_data);
+        //TODO: show loading scores dialog and hide after
+    };
+
+    var ajaxErrorHandleScore = function() {
+
+        var result_data = {};
+
+        result_data.section_scores_count = 0;
+        result_data.scoresList = {};
+
+        //TODO: call right functions
+        _game.hideLoadingIcon();
+        _game.showNoScoreInfoDialog();
+    };
 
     var gameData = function (section_data) {
 
@@ -70,7 +110,7 @@ var Application = function (iGame){
         _game.hideLoadingIcon();
     };
 
-    var ajaxErrorHandle = function() {
+    var ajaxErrorHandleQuestions = function() {
 
         var result_data = {};
 
