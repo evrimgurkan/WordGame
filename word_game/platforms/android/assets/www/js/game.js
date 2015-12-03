@@ -14,8 +14,9 @@ var Game = function () {
         _resetGameCount = 0,
         _currentScore = 0,
         _totalScore = 0,
-        _sectionCount = 1; // TODO: should be increased
-//TODO: calculate score
+        _sectionCount = 2; // TODO: should be increased
+    //TODO: calculate score
+    //TODO: meta tag in html pages
     var _gameStates = {
         time_is_up: 0,
         section_completed: 1,
@@ -280,7 +281,7 @@ var Game = function () {
         //    calculatedScoreConstant = (_gameData.scoreMultiplier - _wrongAnswerCount - _resetGameCount * 3);
         //}
         _currentScore = (calculatedScoreConstant * _self.currentQuestionNo) + _currentTime;
-        _currentScore -= (_wrongAnswerCount * 2) + (_resetGameCount * 3);
+        _currentScore -= (_wrongAnswerCount * 6) + (_resetGameCount * 12);
         if (_currentScore <= 0 )
         {
             _currentScore = 0;

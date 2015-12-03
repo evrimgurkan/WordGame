@@ -185,7 +185,7 @@ h1 {
     line-height: 150%;
     text-align: center;
     font-family: 'Inder', cursive;
-    font-size: 200%;
+    font-size: 175%;
     padding-bottom: 5%;
     padding-top: 5%;
     background: -webkit-linear-gradient(#E1E846, #fbb650); /* For Safari 5.1 to 6.0 */
@@ -212,14 +212,14 @@ h1 {
 
 #selectionButtons {
     text-align: center;
-    margin-top: 10%;
+    margin-top: 5%;
     font-family: 'Inder', cursive;
-    font-size: 175%;
+    font-size: 150%;
     line-height: 500%;
 }
 
 #leftButton {
-    margin-right: 10%;
+    margin-right: 3%;
     background-color: #3c5cff;
     box-shadow: 0 0 30px 0 #3c5cff; /* Inherits the font color */
     color: white;
@@ -345,7 +345,7 @@ svg {
     }
 
     #stepValue {
-        font-size: 250%;
+        font-size: 200%;
     }
 
     #timerContainer {
@@ -357,7 +357,7 @@ svg {
     }
 
     #questionArea {
-        font-size: 300%;
+        font-size: 250%;
     }
 
     #selectionButtons {
@@ -391,7 +391,7 @@ svg {
 
     #descriptionArea {
         margin-top: 75%;
-        font-size: 125%;
+        font-size: 105%;
         margin-bottom: 4%;
     }
 
@@ -401,22 +401,39 @@ svg {
     }
 
     #stepValue {
-        margin-bottom: 3%;
         font-size: 150%;
     }
 
     #questionArea {
         margin-top: 3%;
-        font-size: 175%;
+        font-size: 135%;
         padding-bottom: 5%;
         padding-top: 5%;
     }
 
     #selectionButtons {
-        margin-top: 5%;
+        margin-top: -3%;
     }
 
 }
+
+@media screen and  (min-height: 500px) and (max-width: 500px){
+    #selectionButtons {
+        margin-top: 10%;
+    }
+
+    #descriptionArea {
+        font-size: 125%;
+        margin-bottom: 5%;
+    }
+
+    #questionArea {
+        margin-top: 5%;
+        font-size: 150%;
+    }
+
+}
+
 @media screen and  (max-height: 500px){
     #descriptionArea {
         margin-top: 70%;
@@ -459,7 +476,7 @@ svg {
 
     #questionArea {
         margin-top: 3%;
-        font-size: 175%;
+        font-size: 150%;
         padding-bottom: 5%;
         padding-top: 5%;
     }
@@ -484,7 +501,7 @@ svg {
     }
 
     #questionArea {
-        font-size: 250%;
+        font-size: 225%;
     }
 
     #selectionButtons {
