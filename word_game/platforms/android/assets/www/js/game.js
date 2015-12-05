@@ -228,6 +228,9 @@ var Game = function () {
         setTimeout(function(){
             _self.clearScreenChanges(buttonID)
         }, 100);
+        setTimeout(function(){
+            _self.clearTrueFalseTimerColor()
+        }, 200);
     };
 
     _self.questionUpdate = function (answer) {
@@ -249,14 +252,23 @@ var Game = function () {
         document.getElementById(buttonID).style.boxShadow = "0 0 30px 0 " + CONSTANTS.strings.game.COLOR_BLUE;
     };
 
+    _self.clearTrueFalseTimerColor = function() {
+        $("#timer_circle").css({'fill': '#303E49', transition: "0.1s"});
+        //document.getElementById("timer_circle").style.fill = "#303E49";//CONSTANTS.strings.game.COLOR_BLUE; // blue
+    };
+
     _self.updateDisplay = function (answer, buttonID) {
 
         _self.updateStep();
         if (answer === true) {
+            $("#timer_circle").css({'fill': CONSTANTS.strings.game.COLOR_GREEN, transition: "0.1s"});
+            //document.getElementById("timer_circle").style.fill = CONSTANTS.strings.game.COLOR_GREEN; // green
             document.getElementById(buttonID).style.backgroundColor = CONSTANTS.strings.game.COLOR_GREEN; // green
             document.getElementById(buttonID).style.boxShadow = "0 0 30px 0 " + CONSTANTS.strings.game.COLOR_GREEN;
         }
         else {
+            $("#timer_circle").css({'fill': CONSTANTS.strings.game.COLOR_RED, transition: "0.1s"});
+            //document.getElementById("timer_circle").style.fill = CONSTANTS.strings.game.COLOR_RED; // green
             document.getElementById(buttonID).style.backgroundColor = CONSTANTS.strings.game.COLOR_RED;
             document.getElementById(buttonID).style.boxShadow = "0 0 30px 0 " + CONSTANTS.strings.game.COLOR_RED;
         }
