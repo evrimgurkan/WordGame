@@ -7,10 +7,11 @@ var Application = function (iGame){
      * Public Functions
      */
 
-    _self.getGameData = function (sectionId) {
+    _self.getGameData = function (sectionNo,difficultyLevel) {
 
+        var rUrl = CONSTANTS.strings.application.LINK_WEB_SERVICE_QUESTIONS + "?s_no="+sectionNo + "&s_diff_level=" + difficultyLevel;
         $.ajax({
-            url: CONSTANTS.strings.application.LINK_WEB_SERVICE_QUESTIONS + "?s_id="+sectionId,
+            url: rUrl,
             dataType: 'jsonp',
             jsonp: 'jsoncallback',
             timeout: 10000,
@@ -98,6 +99,8 @@ var Application = function (iGame){
         result_data.totalQuestionCount = section_data['Q_COUNT'];
         result_data.sectionTime = section_data['S_TIME'];
         result_data.description = section_data['S_DESC'];
+        result_data.description = section_data['S_DESC'];
+        result_data.passCount = section_data['S_PASS_COUNT'];
 
         /*
          * !!!!!!!!!!!!!!!!!!!!!! SHOULD BE GET FROM WEBSERVICE !!!!!!!!!!!!!!!!!!!!!!!!!!!

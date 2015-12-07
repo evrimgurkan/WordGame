@@ -21,6 +21,7 @@ var CONSTANTS = {
              COLOR_BLUE : '#3c5cff',
              COLOR_GREEN : '#6FDB6F',
              COLOR_RED : '#980F0F',
+             COLOR_BACKGROUND : '#1A2631',
 
              MESSAGE_TIME_IS_UP : 'Zaman Tükendi!',
              MESSAGE_COMPLETED_QUESTIONS : 'Tebrikler, Tüm soruları cevapladınız.',

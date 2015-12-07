@@ -81,7 +81,7 @@ var ADMOB = {
     createAdvBanner: function(iOverlap,iOffsetTopBar) {
         if (typeof iOverlap === CONSTANTS.strings.global.UNDEFINED)
         {
-            iOverlap = false;
+            iOverlap = true;
         }
         if (typeof iOffsetTopBar === CONSTANTS.strings.global.UNDEFINED)
         {

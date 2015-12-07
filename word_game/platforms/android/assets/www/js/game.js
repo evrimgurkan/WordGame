@@ -7,7 +7,7 @@ var Game = function () {
     var _self = this;
     var _userID = -1;
     var _application = new Application(_self);
-    var _generatedSectionID;
+    var _generatedSectionNo;
     var _timerInterval,
         _wrongAnswerCount,
         _currentTime,
@@ -15,6 +15,8 @@ var Game = function () {
         _currentScore = 0,
         _totalScore = 0,
         _sectionCount = 2; // TODO: should be increased
+        _sectionDifficultyLevel = 1;
+        _sectionPassCount = 1;
     //TODO: calculate score
     //TODO: meta tag in html pages
     var _gameStates = {
@@ -26,7 +28,8 @@ var Game = function () {
 
     var _gameData ;
 
-    _self.init = function (){
+    _self.init = function (diff_level){
+        _sectionDifficultyLevel = diff_level;
         _totalScore = 0;
         _currentScore = 0;
         _application.bindEvents();
@@ -42,20 +45,21 @@ var Game = function () {
     _self.getSectionQuestions = function () {
 
         _self.showLoadingIcon(CONSTANTS.strings.game.MESSAGE_QUESTIONS_LOADING);
-        _generatedSectionID = _self.getNextSectionID();
-        _application.getGameData(_generatedSectionID);
+        _generatedSectionNo = _self.getNextSectionNo();
+        _application.getGameData(_generatedSectionNo,_sectionDifficultyLevel);
     };
 
-    _self.getNextSectionID = function () {
+    _self.getNextSectionNo = function () {
         // generate random value between 1 and section count
-        var id = Math.floor((Math.random() * _sectionCount) + 1);
-        return id;
+        var no = Math.floor((Math.random() * _sectionCount) + 1);
+        return no;
     };
 
     _self.onSectionQuestionsLoaded = function (data) {
         _gameData = data;
         _sectionCount = _gameData.sectionCount -1;// minus 1 because of the webservice problem
         _self.clearAllScreen();
+        _self.initializeSectionPassOption(_gameData.passCount); // pass count should not be reset in restarts
         _self.startGame();
     };
 
@@ -63,10 +67,11 @@ var Game = function () {
         _self.showLoadingIcon(CONSTANTS.strings.game.MESSAGE_QUESTIONS_LOADING);
         _self.currentGameState =  _gameStates.continue;
         _self.currentQuestionNo = 1;
+        _self.initializeSectionPassOption(_self._sectionPassCount);
         _wrongAnswerCount = 0;
         _currentTime = 0;
         _currentScore = 0;
-        _generatedSectionID = 1;
+        _generatedSectionNo = 1;
         $('#questionArea').html('');
         $('#descriptionArea').html('');
         document.getElementById("leftButton").innerHTML = '';
@@ -227,10 +232,10 @@ var Game = function () {
         _self.updateDisplay(_isAnswerCorrect, buttonID);
         setTimeout(function(){
             _self.clearScreenChanges(buttonID)
-        }, 100);
-        setTimeout(function(){
-            _self.clearTrueFalseTimerColor()
         }, 200);
+        /*setTimeout(function(){
+            _self.clearTrueFalseTimerColor()
+        }, 200);*/
     };
 
     _self.questionUpdate = function (answer) {
@@ -248,6 +253,7 @@ var Game = function () {
 
     _self.clearScreenChanges = function (buttonID) {
 
+        $('.icon').removeClass('visible');
         document.getElementById(buttonID).style.backgroundColor = CONSTANTS.strings.game.COLOR_BLUE; // blue
         document.getElementById(buttonID).style.boxShadow = "0 0 30px 0 " + CONSTANTS.strings.game.COLOR_BLUE;
     };
@@ -261,14 +267,16 @@ var Game = function () {
 
         _self.updateStep();
         if (answer === true) {
-            $("#timer_circle").css({'fill': CONSTANTS.strings.game.COLOR_GREEN, transition: "0.1s"});
+            //$("#timer_circle").css({'fill': CONSTANTS.strings.game.COLOR_GREEN, transition: "0.1s"});
             //document.getElementById("timer_circle").style.fill = CONSTANTS.strings.game.COLOR_GREEN; // green
+            $('#tick').addClass('visible');
             document.getElementById(buttonID).style.backgroundColor = CONSTANTS.strings.game.COLOR_GREEN; // green
             document.getElementById(buttonID).style.boxShadow = "0 0 30px 0 " + CONSTANTS.strings.game.COLOR_GREEN;
         }
         else {
-            $("#timer_circle").css({'fill': CONSTANTS.strings.game.COLOR_RED, transition: "0.1s"});
+            //$("#timer_circle").css({'fill': CONSTANTS.strings.game.COLOR_RED, transition: "0.1s"});
             //document.getElementById("timer_circle").style.fill = CONSTANTS.strings.game.COLOR_RED; // green
+            $('#cross').addClass('visible');
             document.getElementById(buttonID).style.backgroundColor = CONSTANTS.strings.game.COLOR_RED;
             document.getElementById(buttonID).style.boxShadow = "0 0 30px 0 " + CONSTANTS.strings.game.COLOR_RED;
         }
@@ -308,7 +316,7 @@ var Game = function () {
     };
 
     _self.getUserScoreOrder = function (score) {
-        _application.getScoreInfo(_generatedSectionID,_userID,score);
+        _application.getScoreInfo(_generatedSectionNo,_userID,score);
     };
 
     _self.showNoDataDialog = function (){
@@ -469,4 +477,58 @@ var Game = function () {
         navigation.onBackKeyDown();
     };
 
+    _self.onPassBtnClicked = function (){
+
+        if (_self._sectionPassCount > 0)
+        {
+            _self._sectionPassCount--;
+            $('#passRightCount').html("PAS: " + _self._sectionPassCount);
+            getCorrectAnswer();
+        }
+
+        if (_self._sectionPassCount === 0)
+        {
+            // add cass class only one time
+            _self.disablePassBtn();
+        }
+    };
+
+    _self.disablePassBtn = function () {
+        $('#passRightCount').addClass("disabled");
+    };
+
+    _self.enablePassBtn = function () {
+        $('#passRightCount').removeClass("disabled");
+    };
+
+    _self.initializeSectionPassOption = function(pass_count) {
+        _self._sectionPassCount = pass_count;
+        $('#passRightCount').html("PAS: " + _self._sectionPassCount);
+    };
+
+    _self.onRetryBtnClicked = function () {
+        _self.stopTimer();
+        _self.showScoreCalculationInfo();
+    };
+
+    _self.onGoNextSectionBtnClicked = function (){
+        _self.enablePassBtn();
+        _self.stopTimer();
+        _self.goToNextSection();
+    };
+
+    var getCorrectAnswer = function () {
+        var _leftButtonValue  = document.getElementById("leftButton").value;
+        var _questionAnswerID    = "Q_ANSWER" + _self.currentQuestionNo;
+        var _questionAnswer      = _gameData.questionList[_questionAnswerID];
+
+        if (_leftButtonValue === _questionAnswer)
+        {
+            _self.onButtonClick("leftButton");
+        }
+        else
+        {
+            _self.onButtonClick("rightButton");
+        }
+    }
 };

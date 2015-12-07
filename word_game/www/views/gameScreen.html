@@ -27,12 +27,6 @@
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
 
-        <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-        <link href='https://fonts.googleapis.com/css?family=Sancreek' rel='stylesheet' type='text/css'>
-        <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
-
-        <link href='https://fonts.googleapis.com/css?family=Inder' rel='stylesheet' type='text/css'>
-
         <link rel="stylesheet" type="text/css" href="../css/gameScreen.css" />
         <link rel="stylesheet" type="text/css" href="../css/fonts.css" />
         <link rel="stylesheet" type="text/css" href="../css/notification.css" />
@@ -46,28 +40,26 @@
         <script type="text/javascript" src="../js/game.js"></script>
         <script type="text/javascript" src="../js/index.js"></script>
         <script type="text/javascript" src="../js/notification.js"></script>
-        <!--<script type="text/javascript" src="../js/load_section.js"></script>
-        <script type="text/javascript" src="../js/load_questions.js"></script>-->
 
         <script type="text/javascript">
-            document.addEventListener("deviceready", onDeviceReady, false);
-
-            function onDeviceReady() {
-                alert("device ready came")
-            }
+            window._game = new Game();
             navigation.initialize();
             navigation.setPreviousPage('../index.html');
-//            ADMOB.createAdvBanner();
-//            ADMOB.showAdvBanner();
         </script>
-        <title>First App!</title>
+        <title>bilgeç!</title>
     </head>
     <body>
         <div id="menuBanner">
             <a onclick="navigation.onBackKeyDown()" class="sideMenuButton"></a>
             <span class="appName">bilgeç</span>
         </div>
+        <div class="options">
+            <a  class="retry" onclick='_game.onRetryBtnClicked()'>Yeniden Oyna</a>
+            <a id="passRightCount" class="pass" onclick='_game.onPassBtnClicked()'>PAS</a>
+            <a  class="next" onclick='_game.onGoNextSectionBtnClicked()'>Sonraki Oyun</a>
+        </div>
         <div id="applicationContainer">
+
             <div id="stepValue">1 / 40</div>
             <div id="stepContainer">
                 <div class="cont">
@@ -76,6 +68,8 @@
             </div>
 
             <div id="timerContainer">
+                <i id="cross" class="icon cross"></i>
+                <i id="tick" class="icon tick"></i>
                 <span id="timerValue">0</span>
                 <svg width="160" height="160" xmlns="http://www.w3.org/2000/svg">
                     <g>
@@ -118,10 +112,55 @@
             </div> <!-- cd-popup-container -->
         </div> <!-- cd-popup -->
 
+        <div class="cd-popup-selection visible" role="alert">
+            <div class="cd-popup-selection-container">
+                <div class="difficulties visible">
+                    <ul id="difficulty-list">
+                        <li style="text-align: center;">
+                            <span >Oynamak istediğiniz zorluk seviyesini seçiniz.</span>
+                        </li>
+                        <li>
+                            <span>Kolay </span> <input style="margin-left: 1em;" name="difficultyLevel" type="radio" id="radio_easy" checked="checked">
+                        </li>
+                        <li>
+                            <span>Orta  </span> <input style="margin-left: 1.8em;" name="difficultyLevel" type="radio" id="radio_medium">
+                        </li>
+                        <li>
+                            <span>Zor   </span> <input style="margin-left: 2.2em;" name="difficultyLevel" type="radio" id="radio_hard">
+                        </li>
+                    </ul>
+                </div>
+                <ul class="cd-buttons-selection">
+                    <li style="width: 100%;"><a  onclick='onDifficultyLevelSelected()'>Tamam</a></li>
+                </ul>
+            </div> <!-- cd-popup-container -->
+        </div> <!-- cd-popup -->
+
         <script type="text/javascript">
-//            var data = JSON.parse(sessionStorage.getItem("gameData"));
-            window._game = new Game(/*data*/);
-            _game.init();
+            function onDifficultyLevelSelected()
+            {
+                var diff_level = getSelectedDiffLevel();
+
+                _game.init(diff_level);
+            }
+
+            function getSelectedDiffLevel()
+            {
+                $('.cd-popup-selection').removeClass("visible");
+                $('.difficulties').removeClass("visible");
+                if( document.getElementById("radio_hard").checked === true)
+                {
+                    return 3;
+                }
+                else if ( document.getElementById("radio_medium").checked === true)
+                {
+                    return 2;
+                }
+                else
+                {
+                    return 1;
+                }
+            }
         </script>
     </body>
 </html>
