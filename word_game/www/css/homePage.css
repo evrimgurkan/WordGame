@@ -55,6 +55,11 @@ body {
     box-shadow: 0 0 10px 0 #3c5cff; /* Inherits the font color */
 }
 
+.logo {
+    text-align: center;
+    margin-top: 25%;
+}
+
 .logo p{
     margin-top: 25%;
     font-size: 600%;
@@ -156,7 +161,7 @@ button{
 
 @media screen and (max-width: 384px)  and (max-height: 567px) /* Mobile */ {
     .pure-button {
-        font-size: 200%;
+        font-size: 225%;
     }
 }
 

@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="io.cordova.wordgame" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Bilgeç - Bilgi Yarışı</name>
+    <name>Sorukolik - Bilgi Yarışı</name>
     <description>
-        bilgeç - En eğlenceli 2 seçenekli bilgi yarışması
+        Sorukolik - En eğlenceli, En hızlı, 2 seçenekli bilgi yarışması
     </description>
     <author email="ceylansmobile@gmail.com" href="">
         Ceylans Mobile Team
@@ -17,9 +17,32 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <platform name="android">
+
         <allow-intent href="market:*" />
         <preference name="AndroidLaunchMode" value="singleTop"/>
         <preference name="android-minSdkVersion" value="14" />
+
+        <preference name="SplashScreen" value="screen" />
+        <preference name="SplashScreenDelay" value="4000" />
+        <preference name="AutoHideSplashScreen" value="true" />
+        <preference name="SplashScreenBackgroundColor" value="#1A2631" /> <!-- Main bakcground -->
+		<preference name="ShowSplashScreenSpinner" value="true"/>
+        <preference name="FadeSplashScreenDuration" value="3000"/>
+
+        <icon src="res/android/icon/icon_ldpi.png" density="ldpi" />
+        <icon src="res/android/icon/icon_mdpi.png" density="mdpi" />
+        <icon src="res/android/icon/icon_hdpi.png" density="hdpi" />
+        <icon src="res/android/icon/icon_xhdpi.png" density="xhdpi" />
+
+        <splash src="res/android/splash/splash_land_hdpi.png" density="land-hdpi"/>
+        <splash src="res/android/splash/splash_land_ldpi.png" density="land-ldpi"/>
+        <splash src="res/android/splash/splash_land_xhdpi.png" density="land-xhdpi"/>
+        <splash src="res/android/splash/splash_land_mdpi.png" density="land-mdpi"/>
+
+        <splash src="res/android/splash/splash_port_hdpi.png" density="port-hdpi"/>
+        <splash src="res/android/splash/splash_port_ldpi.png" density="port-ldpi"/>
+        <splash src="res/android/splash/splash_port_xhdpi.png" density="port-xhdpi"/>
+        <splash src="res/android/splash/splash_port_mdpi.png" density="port-mdpi"/>
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
@@ -27,4 +50,7 @@
     </platform>
     <preference name="orientation" value="portrait" />
     <plugin name="cordova-plugin-admobpro" />
+    <plugin name="cordova-plugin-splashscreen" />
+
+
 </widget>

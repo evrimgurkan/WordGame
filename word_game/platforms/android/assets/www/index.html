@@ -6,62 +6,60 @@
     <meta name="msapplication-tap-highlight" content="no" />
     <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-
+    <link rel="stylesheet" type="text/css" href="css/fonts.css" />
+    
     <link rel="stylesheet" type="text/css" href="css/homePage.css" />
     <link rel="stylesheet" type="text/css" href="css/notification.css" />
-    <link rel="stylesheet" type="text/css" href="css/fonts.css" />
 
     <script src="js/jquery-1.11.3.min.js"></script>
 
     <script type="text/javascript" src="cordova.js"></script>
 
     <script type="text/javascript" src="js/strings.js"></script>
+    <script type="text/javascript" src="js/admob.js"></script>
     <script type="text/javascript" src="js/notification.js"></script>
     <script type="text/javascript" src="js/connection.js"></script>
     <script type="text/javascript" src="js/navigate.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
-    <script type="text/javascript" src="js/admob.js"></script>
+    <script type="text/javascript" src="js/google-analytics.js"></script>
+    <script type="text/javascript" src="js/splash-screen.js"></script>
+
     <script type="text/javascript">
         function onLoad() {
-            document.addEventListener("deviceready", onDeviceReady, false);
+            if(( /(ipad|iphone|ipod|android|windows phone)/i.test(navigator.userAgent) )) {
+                document.addEventListener('deviceready', onDeviceReady, false);
+            } else {
+                onDeviceReady();
+            }
         }
 
         // PhoneGap is loaded and it is now safe to make calls PhoneGap methods
         //
         function onDeviceReady() {
-            //  var _application = new Application();
-            //  _application.getGameData(1);
+            ADMOB.initialize();
+            SplashScreen.hide();
             navigation.initialize();
             connection.initialize();
-
-            ADMOB.initialize();
+            GA.initialize();
+            GA.trackView('indexPage');
         }
 
     </script>
-    <title>Ana Sayfa</title>
+    <title>sorukolik</title>
 </head>
 <body onload="onLoad()">
-<div class="release">
-    <span>Beta</span>
-</div>
+<!--<div class="release">-->
+    <!--<span>Beta</span>-->
+<!--</div>-->
     <div class="logo">
-        <p>
-            bilgeç
-        </p>
-
+        <!--<p style="margin-left: -10%;">-->
+            <!--soru-->
+        <!--</p>-->
+        <!--<p style="margin-top: -24%;margin-left: 26%;">kolik</p>-->
+        <img src="img/logo.png"/>
     </div>
     <div class="navigationContainer">
-        <button id="startGame" class="button-secondary pure-button" onclick="navigation.navigateToPage(this.id)">Oyuna Başla</button>
-        <!--<div class="ofllineSeperation">-->
-            <!--<span>-->
-                <!--or Login With-->
-            <!--</span>-->
-        <!--</div>-->
-        <!--<div class="loginButtons">-->
-            <!--<button id="facebookLogin" class="button-secondary pure-button" onclick="navigation.navigateToLogin(this.id)">Facebook</button>-->
-            <!--<button id="twitterLogin" class="button-secondary pure-button" onclick="navigation.navigateToLogin(this.id)">Twitter</button>-->
-            <!--<button id="googleLogin" class="button-secondary pure-button" onclick="navigation.navigateToLogin(this.id)">Google</button>-->
-        <!--</div>-->
+        <button id="startGame" class="button-secondary pure-button" onclick="navigation.navigateToPage(this.id);">Oyuna Başla</button>
         <button id="howToButton" class="button-secondary pure-button" onclick="navigation.navigateToPage(this.id)">Nasıl Oynanır?</button>
         <div class="cd-popup" role="alert">
             <div class="cd-popup-container">

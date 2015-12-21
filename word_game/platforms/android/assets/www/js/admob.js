@@ -4,6 +4,12 @@ var ADMOB = {
 
     admobID : {},
 
+    _adShownCallback : null,
+    _adClosedCallback: null,
+    _adClickedCallback : null,
+    _adBannerClickedCallback : null,
+    _adLoadedCallback: null,
+
     initAdvIDs : function () {
         if( /(android)/i.test(navigator.userAgent) ) {
             ADMOB.admobID = { // for Android
@@ -37,6 +43,12 @@ var ADMOB = {
             // autoShow: true // auto show interstitial ad when loaded, set to false if prepare/show
 
         };
+
+        if (typeof AdMob === CONSTANTS.strings.global.UNDEFINED)
+        {
+            return;
+        }
+
         AdMob.setOptions( defaultOptions );
         ADMOB.registerAdEvents();
     },
@@ -45,16 +57,20 @@ var ADMOB = {
     registerAdEvents : function() {
         // new events, with variable to differentiate: adNetwork, adType, adEvent
         document.addEventListener('onAdFailLoad', function(data){
-            alert('error: ' + data.error +
-                ', reason: ' + data.reason +
-                ', adNetwork:' + data.adNetwork +
-                ', adType:' + data.adType +
-                ', adEvent:' + data.adEvent); // adType: 'banner', 'interstitial', etc.
+            ADMOB.onAdFailLoad(data);
         });
-        document.addEventListener('onAdLoaded', function(data){});
-        document.addEventListener('onAdPresent', function(data){});
-        document.addEventListener('onAdLeaveApp', function(data){});
-        document.addEventListener('onAdDismiss', function(data){});
+        document.addEventListener('onAdLoaded', function(data){
+            ADMOB.onAdLoaded(data);
+        });
+        document.addEventListener('onAdPresent', function(data){
+            ADMOB.onAdPresent(data);
+        });
+        document.addEventListener('onAdLeaveApp', function(data){
+            ADMOB.onAdLeaveApp(data);
+        });
+        document.addEventListener('onAdDismiss', function(data){
+            ADMOB.onAdDismiss(data);
+        });
     },
 
     loadAdmob : function (){
@@ -67,12 +83,10 @@ var ADMOB = {
 
 
     initialize : function () {
-        if (typeof AdMob === 'undefined')
+        if (typeof AdMob === CONSTANTS.strings.global.UNDEFINED)
         {
-            alert('Admob is undefined');
+            return;
         }
-        if (! AdMob ) { alert( 'admob plugin not ready' ); return; }
-
         ADMOB.initAdvIDs();
         ADMOB.initAdvOptions();
         ADMOB.createAdvBanner();
@@ -88,6 +102,11 @@ var ADMOB = {
             iOffsetTopBar = false;
         }
 
+        if (typeof AdMob === CONSTANTS.strings.global.UNDEFINED)
+        {
+            return;
+        }
+
         AdMob.createBanner( {adId:ADMOB.admobID.banner, overlap:iOverlap, offsetTopBar:iOffsetTopBar,autoShow : true} );
     },
 
@@ -96,33 +115,58 @@ var ADMOB = {
     },
 
     hideAdvBanner : function(){
+        if (typeof AdMob === CONSTANTS.strings.global.UNDEFINED)
+        {
+            return;
+        }
         AdMob.hideBanner();
     },
 
     removeAdvBanner : function () {
+        if (typeof AdMob === CONSTANTS.strings.global.UNDEFINED)
+        {
+            return;
+        }
         AdMob.removeBanner();
     },
 
     createAdvBannerBySize : function(inputWidth,inputHeight) {
-
+        if (typeof AdMob === CONSTANTS.strings.global.UNDEFINED)
+        {
+            return;
+        }
         AdMob.createBanner( {adId:ADMOB.admobID.banner, width:inputWidth, height:inputHeight} );
     },
 
-    prepareFullScreenAdv : function(autoshow) {
-        alert('before prepare, autoshow : ' + autoshow);
-        if (typeof AdMob === 'undefined')
+    prepareFullScreenAdv : function(autoshow, successCallback, errorCallback) {
+        if (typeof AdMob === CONSTANTS.strings.global.UNDEFINED)
         {
-            alert('prepareFullScreenAdv Admob is undefined');
+            alert("prepareFullScreenAdv admob is undefined")
+            return;
         }
-        window.AdMob.prepareInterstitial({adId:ADMOB.admobID.interstitial, autoShow:true});
-        alert('after prepare fullscreen');
+
+        if (typeof successCallback === CONSTANTS.strings.global.UNDEFINED &&
+            typeof errorCallback === CONSTANTS.strings.global.UNDEFINED )
+        {
+            window.AdMob.prepareInterstitial({adId:ADMOB.admobID.interstitial, autoShow:autoshow});
+        }
+        else
+        {
+
+            window.AdMob.prepareInterstitial({adId:ADMOB.admobID.interstitial, autoShow:autoshow}, successCallback, errorCallback);
+            alert("after prepareInterstitial")
+        }
+
     },
 
     showFullScreenAdv : function(){
-        alert('before prepare, showInterstitial: ');
-        ADMOB.prepareFullScreenAdv(false);
+        if (typeof AdMob === CONSTANTS.strings.global.UNDEFINED)
+        {
+            alert("admob fullscreen is undefined");
+            return;
+        }
+        //ADMOB.prepareFullScreenAdv(false);
         AdMob.showInterstitial();
-        alert('after AdMob.showInterstitial();');
     },
 
     hideFullScreenAdv : function(){
@@ -130,6 +174,130 @@ var ADMOB = {
     },
 
     isFullScreenAdvReady : function(callback) {
+        if (typeof AdMob === CONSTANTS.strings.global.UNDEFINED)
+        {
+            alert("admob is undefined");
+            return;
+        }
+        alert("func : " + (typeof AdMob.isInterstitialReady));
         AdMob.isInterstitialReady(callback);
+    },
+
+
+    /* EVENT FUNCTIONS*/
+
+    //data.adNetwork, the Ad network name, like 'AdMob', 'Flurry', 'iAd', etc.
+    //data.adType, 'banner' or 'interstitial'
+    //data.adEvent, the event name
+
+    //Triggered when failed to receive Ad.
+    onAdFailLoad : function(data) {
+        if (typeof AdMob === CONSTANTS.strings.global.UNDEFINED)
+        {
+            return;
+        }
+
+
+        //alert('error: ' + data.error +
+        //    ', reason: ' + data.reason +
+        //    ', adNetwork:' + data.adNetwork +
+        //    ', adType:' + data.adType +
+        //    ', adEvent:' + data.adEvent); // adType: 'banner', 'interstitial', etc.
+
+
+        if(data.adType == 'banner'){
+            //AdMob.hideBanner();
+        }
+        else if(data.adType == 'interstitial'){
+
+        }
+    },
+
+    onAdLoaded : function(data) {
+        if (typeof AdMob === CONSTANTS.strings.global.UNDEFINED)
+        {
+            return;
+        }
+        if(data.adType == 'banner'){
+            //AdMob.showBanner();
+        }
+        else if(data.adType == 'interstitial' &&
+                ADMOB._adLoadedCallback !== null)
+        {
+            ADMOB._adLoadedCallback();
+        }
+    },
+
+    //Triggered when Ad will be showed on screen.
+    onAdPresent : function(data) {
+        //alert(" onAdPresent ENTER ");
+        if (typeof AdMob === CONSTANTS.strings.global.UNDEFINED)
+        {
+            return;
+        }
+        if(data.adType == 'banner'){
+        }
+        else if(data.adType == 'interstitial' &&
+                ADMOB._adShownCallback !== null)
+        {
+            ADMOB._adShownCallback();
+        }
+    },
+
+    //Triggered when user click the Ad, and will jump out of your App.
+    onAdLeaveApp : function(data) {
+        if (typeof AdMob === CONSTANTS.strings.global.UNDEFINED)
+        {
+            return;
+        }
+
+        if( data.adType == 'banner' &&
+            ADMOB._adBannerClickedCallback !== null)
+        {
+
+            ADMOB._adBannerClickedCallback();
+        }
+        else if(data.adType == 'interstitial' &&
+                ADMOB._adClickedCallback !== null)
+        {
+            ADMOB._adClickedCallback();
+        }
+    },
+
+    //Triggered when dismiss the Ad and back to your App.
+    onAdDismiss : function(data) {
+        if (typeof AdMob === CONSTANTS.strings.global.UNDEFINED)
+        {
+            return;
+        }
+
+        if(data.adType == 'banner'){
+        }
+        else if(data.adType == 'interstitial'&&
+                ADMOB._adClosedCallback !== null)
+        {
+            ADMOB._adClosedCallback();
+        }
+    },
+
+    setFullScreenAdShownCallback : function (callback) {
+        ADMOB._adShownCallback = callback;
+    },
+
+    setFullScreenAdClosedCallback : function (callback) {
+        ADMOB._adClosedCallback = callback;
+    },
+
+    setFullScreenAdClickedCallback : function (callback) {
+        ADMOB._adClickedCallback = callback;
+    },
+
+    setBannerAdClickedCallback : function (callback) {
+        ADMOB._adBannerClickedCallback = callback;
+    },
+
+    setFullScreenAdLoadedCallback : function (callback) {
+        ADMOB._adLoadedCallback = callback;
     }
+
 };

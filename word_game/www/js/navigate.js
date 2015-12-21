@@ -9,17 +9,18 @@ var navigation = {
     // Application Constructor
     initialize: function() {
         this.bindEvents();
+        navigation._previousPage = CONSTANTS.strings.global.UNDEFINED;
     },
 
     setPreviousPage : function(previousPage) {
-        _previousPage = previousPage;
+        navigation._previousPage = previousPage;
     },
     // Bind Event Listeners
     //
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'backbutton', and 'online'.
     bindEvents: function() {
-        document.addEventListener(CONSTANTS.events.navigation.BACK_BUTTON, this.onExitApplication, false);        // Register the event listener
+        document.addEventListener(CONSTANTS.events.navigation.BACK_BUTTON, this.onBackKeyDown, false);        // Register the event listener
         document.addEventListener(CONSTANTS.events.navigation.MENU_BUTTON, this.onMenuKeyDown, false);
     },
 
@@ -27,23 +28,31 @@ var navigation = {
     },
 
     onBackKeyDown: function() {
-        history.back();
-        //alert("back basıldı _previousPage : " +  _previousPage);
-        //if (_previousPage !== CONSTANTS.strings.global.UNDEFINED)
-        //{
-        //    window.location = _previousPage;
-        //}
-        //else // in home page, exit app
-        //{
-        //    messageBox.showInfoDialog(CONSTANTS.strings.navigation.MESSAGE_EXIT_APPLICATION,
-        //                    navigation.onExitApplication(),
-        //                    [CONSTANTS.strings.navigation.M_BTN_EXIT_APPLICATION_CONFIRM,
-        //                     CONSTANTS.strings.navigation.M_BTN_EXIT_APPLICATION_CANCEL]);
-        //}
+        //history.back();
+
+        if (navigation._previousPage !== CONSTANTS.strings.global.UNDEFINED)
+        {
+            window.location = navigation._previousPage;
+        }
+        else // in home page, exit app
+        {
+            messageBox.showInfoDialog(CONSTANTS.strings.navigation.MESSAGE_EXIT_APPLICATION,
+                            navigation.onExitApplication,
+                            [CONSTANTS.strings.navigation.M_BTN_EXIT_APPLICATION_CONFIRM,
+                             CONSTANTS.strings.navigation.M_BTN_EXIT_APPLICATION_CANCEL]);
+        }
     },
 
     onExitApplication : function (buttonIndex){
+        if (typeof navigator.app === CONSTANTS.strings.global.UNDEFINED)
+        {
+            return;
+        }
+
+        if (buttonIndex === 0) // confirm
+        {
             navigator.app.exitApp();
+        }
     },
 
     navigateToPage: function (buttonID) {

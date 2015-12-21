@@ -42,9 +42,10 @@ var CONSTANTS = {
         },
 
         application: {
-            MESSAGE_CONTINUE_GAME : '5 sn içinde oyun devam edecek.',
+            MESSAGE_CONTINUE_GAME : '3 sn içinde oyun devam edecek.',
             LINK_WEB_SERVICE_QUESTIONS : 'http://46.101.247.199/word_game_questions.php',
             LINK_WEB_SERVICE_SCORE : 'http://46.101.247.199/word_game_scores.php',
+            LINK_WEB_SERVICE_SECTION_COUNT : 'http://46.101.247.199/word_game_section_count.php',
             LEFT_BUTTON_ERROR_VALUE : ' ',
             RIGHT_BUTTON_ERROR_VALUE : ' ',
             ERROR_DECRIPTION : 'Hata oluştu!'

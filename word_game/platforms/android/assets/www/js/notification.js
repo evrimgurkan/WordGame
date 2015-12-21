@@ -101,7 +101,6 @@ var messageBox = {
                 case 1:
                 {
                     messageBox.createButton('popupLeftButton',labels[0]);
-                    //$('#popupLeftButton').html(labels[0]);
                     $('.cd-buttons li').css({ width: '100%'});
                     break;
                 }
@@ -109,8 +108,6 @@ var messageBox = {
                 {
                     messageBox.createButton('popupLeftButton',labels[0]);
                     messageBox.createButton('popupRightButton',labels[1]);
-                    //$('#popupLeftButton').html(labels[0]);
-                    //$('#popupRightButton').html(labels[1]);
                     break;
                 }
                 default :

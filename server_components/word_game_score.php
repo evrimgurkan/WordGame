@@ -1,5 +1,19 @@
+
+
 <?php
-header('Content-type: application/json');
+
+/* turkish character problem
+1-)mysql veritabanin collation UTF8_generalci yapin(ayni sekilde tablonuzunda utf8_generalci olacak)
+2-)sonra form.php dosyasinda en başa veritabanına bağlantı sağladıktan sonra aşağıdaki satırları ekleyin
+mysql_query("SET NAMES UTF8");
+mysql_query("SET CHARACTER SET utf8");
+mysql_query("SET COLLATION_CONNECTION='utf8_general_ci'");
+3-)sayfanın meta kısmında kodlamasını utf-8 yaptınızmı olay tamamdır.
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+4-)aynı şekilde veritabanını kayıt yaparkende bu yolu izlerseniz, Hiç bir şekilde türkçe dil problemiyle karşılaşmazsınız.
+*/
+
+header('content-type: application/json; charset=utf-8');
 
 $server = "localhost";
 $username = "root";
@@ -14,6 +28,13 @@ $input_score = $_GET['score'];
 
 $con = mysql_connect($server, $username, $password) or die ("Could not connect: " . mysql_error());
 mysql_select_db($database, $con);
+
+// turkish character problem
+mysql_query("SET NAMES UTF8");
+mysql_query("SET CHARACTER SET utf8");
+mysql_query("SET COLLATION_CONNECTION='utf8_general_ci'");
+//---------------------------------
+
 
 #query score count 
 $sql_score_count = "SELECT COUNT(sc.id) as SCORE_COUNT

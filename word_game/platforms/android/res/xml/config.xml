@@ -9,12 +9,37 @@
         <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
         <param name="onload" value="true" />
     </feature>
+    <feature name="UniversalAnalytics">
+        <param name="android-package" value="com.danielcwilson.plugins.analytics.UniversalAnalyticsPlugin" />
+    </feature>
+    <feature name="SplashScreen">
+        <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
+        <param name="onload" value="true" />
+    </feature>
     <allow-intent href="market:*" />
     <preference name="AndroidLaunchMode" value="singleTop" />
     <preference name="android-minSdkVersion" value="14" />
-    <name>Bilgeç - Bilgi Yarışı</name>
+    <preference name="SplashScreen" value="screen" />
+    <preference name="SplashScreenDelay" value="4000" />
+    <preference name="AutoHideSplashScreen" value="true" />
+    <preference name="SplashScreenBackgroundColor" value="#1A2631" />
+    <preference name="ShowSplashScreenSpinner" value="true" />
+    <preference name="FadeSplashScreenDuration" value="3000" />
+    <icon density="ldpi" src="res/android/icon/icon_ldpi.png" />
+    <icon density="mdpi" src="res/android/icon/icon_mdpi.png" />
+    <icon density="hdpi" src="res/android/icon/icon_hdpi.png" />
+    <icon density="xhdpi" src="res/android/icon/icon_xhdpi.png" />
+    <splash density="land-hdpi" src="res/android/splash/splash_land_hdpi.png" />
+    <splash density="land-ldpi" src="res/android/splash/splash_land_ldpi.png" />
+    <splash density="land-xhdpi" src="res/android/splash/splash_land_xhdpi.png" />
+    <splash density="land-mdpi" src="res/android/splash/splash_land_mdpi.png" />
+    <splash density="port-hdpi" src="res/android/splash/splash_port_hdpi.png" />
+    <splash density="port-ldpi" src="res/android/splash/splash_port_ldpi.png" />
+    <splash density="port-xhdpi" src="res/android/splash/splash_port_xhdpi.png" />
+    <splash density="port-mdpi" src="res/android/splash/splash_port_mdpi.png" />
+    <name>Sorukolik - Bilgi Yarışı</name>
     <description>
-        bilgeç - En eğlenceli 2 seçenekli bilgi yarışması
+        Sorukolik - En eğlenceli, En hızlı, 2 seçenekli bilgi yarışması
     </description>
     <author email="ceylansmobile@gmail.com" href="">
         Ceylans Mobile Team

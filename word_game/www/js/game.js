@@ -7,18 +7,22 @@ var Game = function () {
     var _self = this;
     var _userID = -1;
     var _application = new Application(_self);
-    var _generatedSectionNo;
+    var _currentSectionNo;
     var _timerInterval,
-        _wrongAnswerCount,
+        _wrongAnswerCount, // used to handle wrong answer count
         _currentTime,
-        _resetGameCount = 0,
+        _resetGameCount = 0, // used to handle restart game count
         _currentScore = 0,
-        _totalScore = 0,
-        _sectionCount = 2; // TODO: should be increased
-        _sectionDifficultyLevel = 1;
-        _sectionPassCount = 1;
-    //TODO: calculate score
+        _totalScore = 0, // not used total score anymore
+        _sectionCount = 2,// not used initial section count value anymore, gets from webservice
+        _sectionDifficultyLevel = 1,
+        _sectionPassCount = 1, // default pass question right count
+        _isPassDisabled = false, // used to handle pass question right
+        _freezeTimer = false,// to freeze,continue timer value on screen
+        _passedSectionCount = 0; // used to handle passed section count, used for ad management for now
+
     //TODO: meta tag in html pages
+
     var _gameStates = {
         time_is_up: 0,
         section_completed: 1,
@@ -28,12 +32,19 @@ var Game = function () {
 
     var _gameData ;
 
+
     _self.init = function (diff_level){
         _sectionDifficultyLevel = diff_level;
         _totalScore = 0;
         _currentScore = 0;
         _application.bindEvents();
-        _self.getSectionQuestions();
+        //_self.getSectionQuestions();
+        
+        // get section count only one time per diff level
+        _self.getSectionCount();
+
+        _self.initializeAdCallbacks();
+
         _userID = _self.getGeneratedUSerID();
     };
 
@@ -45,8 +56,9 @@ var Game = function () {
     _self.getSectionQuestions = function () {
 
         _self.showLoadingIcon(CONSTANTS.strings.game.MESSAGE_QUESTIONS_LOADING);
-        _generatedSectionNo = _self.getNextSectionNo();
-        _application.getGameData(_generatedSectionNo,_sectionDifficultyLevel);
+        _currentSectionNo = _self.getNextSectionNo();
+        _application.getGameData(_currentSectionNo,_sectionDifficultyLevel);
+         //_self.getSectionCount();
     };
 
     _self.getNextSectionNo = function () {
@@ -55,9 +67,20 @@ var Game = function () {
         return no;
     };
 
+    _self.getSectionCount = function () {
+        _self.showLoadingIcon(CONSTANTS.strings.game.MESSAGE_QUESTIONS_LOADING);
+        _application.getGameSectionCount(_sectionDifficultyLevel);
+    };
+
+    _self.onSectionCountLoaded = function(iSectionCount) {
+        _sectionCount = iSectionCount;
+        _currentSectionNo = _self.getNextSectionNo();
+        _application.getGameData(_currentSectionNo,_sectionDifficultyLevel);
+    };
+
     _self.onSectionQuestionsLoaded = function (data) {
         _gameData = data;
-        _sectionCount = _gameData.sectionCount -1;// minus 1 because of the webservice problem
+        //_sectionCount = _gameData.sectionCount -1;// minus 1 because of the webservice problem
         _self.clearAllScreen();
         _self.initializeSectionPassOption(_gameData.passCount); // pass count should not be reset in restarts
         _self.startGame();
@@ -71,7 +94,7 @@ var Game = function () {
         _wrongAnswerCount = 0;
         _currentTime = 0;
         _currentScore = 0;
-        _generatedSectionNo = 1;
+        //_currentSectionNo = 1;
         $('#questionArea').html('');
         $('#descriptionArea').html('');
         document.getElementById("leftButton").innerHTML = '';
@@ -80,8 +103,7 @@ var Game = function () {
         document.getElementById("rightButton").value = '';
     };
 
-    _self.startGame = function (){
-
+    _self.fillGameData = function() {
         var descriptionArea = $('#descriptionArea');
         var leftButton      = document.getElementById("leftButton");
         var rightButton     = document.getElementById("rightButton");
@@ -97,9 +119,32 @@ var Game = function () {
         var question = _gameData.questionList[questionNumberId];
         questionArea.append(question);
         descriptionArea.html(_gameData.description);
+        _self.updateStep();
+
+    };
+
+    _self.startGame = function (){
+        _self.fillGameData();
+        //var descriptionArea = $('#descriptionArea');
+        //var leftButton      = document.getElementById("leftButton");
+        //var rightButton     = document.getElementById("rightButton");
+        //var questionArea    = $('#questionArea');
+        //_currentScore = 0;
+        //leftButton.innerHTML = _gameData.leftBtnValue;
+        //leftButton.value = _gameData.leftBtnValue;
+        //rightButton.innerHTML = _gameData.rightBtnValue;
+        //rightButton.value = _gameData.rightBtnValue;
+
+
+        //var questionNumberId = 'Q_TEXT' + (_self.currentQuestionNo);
+        //var question = _gameData.questionList[questionNumberId];
+        //questionArea.append(question);
+        //descriptionArea.html(_gameData.description);
         _self.hideLoadingIcon();
         _self.initTimers(_gameData.sectionTime);
-        _self.updateStep();
+
+        _self.prepareFullScreenAdv();
+        //_self.updateStep();
     };
 
     _self.initTimers = function (iTime){
@@ -110,12 +155,29 @@ var Game = function () {
         _currentTime = time;
 
         _timerInterval = setInterval(function() {
+            if (_freezeTimer)
+            {
+                // dont update time on screen if ad is shown or app is paused
+                return;
+            }
+
             $('#timer_circle').css('stroke-dashoffset', initialOffset-(i*(initialOffset/time)));
-            _currentTime = time - i;
+
+            if (time >= i)
+            {
+                _currentTime = time - i;
+            }
+            else
+            {
+                _self.stopTimer();
+                _currentTime = 0;
+            }
 
             timer_value.innerHTML = _currentTime;
 
             if (i == time) {
+                //_self.showFullScreenAdv();
+
                 _self.currentGameState = _gameStates.time_is_up;
                 // no need to show score when time is up
                 //var score = _self.calculateScore();
@@ -124,12 +186,80 @@ var Game = function () {
                 _self.notifyGameFinishedMessage(message);
             }
             else if (_self.currentGameState === _gameStates.section_completed) {
+
                 _self.stopTimer();
                 _self.sectionCompleted();
             }
 
             i++;
         }, 1000);
+    };
+    
+    _self.showFullScreenAdv = function () {
+        GA.trackEvent('ADMOB','ShowFullScreenAdv');
+        //_self.prepareFullScreenAdv();
+        ADMOB.showFullScreenAdv();
+    };
+
+    _self.prepareFullScreenAdv = function () {
+        ADMOB.prepareFullScreenAdv(false);
+    };
+
+    _self.initializeAdCallbacks = function () {
+        ADMOB.setFullScreenAdShownCallback(_self.onFullScreenAdShown);
+        ADMOB.setFullScreenAdClosedCallback(_self.onFullScreenAdClosed);
+        ADMOB.setFullScreenAdClickedCallback(_self.onFullScreenAdClicked);
+        ADMOB.setBannerAdClickedCallback(_self.onBannerAdClicked);
+    };
+
+    // success callback function for prepare fullscreen ad
+    // not used yet
+    _self.prepareSuccessCallback = function () {
+
+        ADMOB.showFullScreenAdv();
+    };
+
+    // error callback function for prepare fullscreen ad
+    // not used yet
+    _self.prepareErrorCallback = function () {
+
+        ADMOB.showFullScreenAdv();
+    };
+
+    // not used yet
+    _self.isFullScreenAdvReady = function (callback) {
+        ADMOB.isFullScreenAdvReady(function(isready){
+            if(isready)
+            {
+                callback();
+            }
+        });
+    };
+
+    // called when full screen ad is closed
+    _self.onFullScreenAdClosed = function () {
+        //_self.continueTimer();
+        //_application.isAdShown(false); // to manage screen loading messages
+        GA.trackEvent('ADMOB','FullScreenAdClosed');
+    };
+
+    // not used yet, it is called even ad is not shown!
+    _self.onFullScreenAdLoaded = function () {
+
+    };
+
+    _self.onFullScreenAdClicked = function () {
+        GA.trackEvent('ADMOB','onFullScreenAdClicked');
+    };
+
+    _self.onBannerAdClicked = function () {
+        GA.trackEvent('ADMOB','onBannerAdClicked');
+    };
+
+    // called when full screen ad is shown
+    _self.onFullScreenAdShown = function () {
+        _application.isAdShown(true); // to manage screen loading messages
+        GA.trackEvent('ADMOB','FullScreenAdShown');
     };
 
     _self.sectionCompleted = function () {
@@ -166,10 +296,19 @@ var Game = function () {
 
     _self.stopTimer = function() {
         clearInterval(_timerInterval);
+        //_timerInterval = 0;
     };
 
-    _self.continueTimer = function() {
-        _self.initTimers(_self.currentTime);
+    _self.startTimerWithTime = function(iTime) {
+        _self.initTimers(iTime);
+    };
+
+    _self.continueTimer = function () {
+        _freezeTimer = false;
+    };
+
+    _self.freezeTimer = function () {
+        _freezeTimer = true;
     };
 
     _self.updateStep = function () {
@@ -232,7 +371,7 @@ var Game = function () {
         _self.updateDisplay(_isAnswerCorrect, buttonID);
         setTimeout(function(){
             _self.clearScreenChanges(buttonID)
-        }, 200);
+        }, 250);
         /*setTimeout(function(){
             _self.clearTrueFalseTimerColor()
         }, 200);*/
@@ -292,14 +431,6 @@ var Game = function () {
     _self.calculateScore = function () {
 
         var calculatedScoreConstant = _gameData.scoreMultiplier;
-        //if (_gameData.scoreMultiplier < (_wrongAnswerCount + 4))
-        //{
-        //    calculatedScoreConstant  = 4;
-        //}
-        //else
-        //{
-        //    calculatedScoreConstant = (_gameData.scoreMultiplier - _wrongAnswerCount - _resetGameCount * 3);
-        //}
         _currentScore = (calculatedScoreConstant * _self.currentQuestionNo) + _currentTime;
         _currentScore -= (_wrongAnswerCount * 6) + (_resetGameCount * 12);
         if (_currentScore <= 0 )
@@ -316,7 +447,7 @@ var Game = function () {
     };
 
     _self.getUserScoreOrder = function (score) {
-        _application.getScoreInfo(_generatedSectionNo,_userID,score);
+        _application.getScoreInfo(_currentSectionNo,_userID,score);
     };
 
     _self.showNoDataDialog = function (){
@@ -363,7 +494,7 @@ var Game = function () {
     };
 
     _self.notifyGameFinishedMessage = function (message) {
-        //alert(message);
+
         if (typeof messageBox !== CONSTANTS.strings.global.UNDEFINED)
         {
             messageBox.showInfoDialog(
@@ -380,7 +511,7 @@ var Game = function () {
     };
 
     _self.notifyGameScores = function (message,scores) {
-        //alert(message);
+
         if (typeof messageBox !== CONSTANTS.strings.global.UNDEFINED)
         {
             if (scores.scoresList.length > 0)
@@ -425,15 +556,31 @@ var Game = function () {
 
         _self.clearAllScreen();
         _resetGameCount++;
+
+        if (_resetGameCount % 2 === 0)
+        {
+            _self.showFullScreenAdv();
+        }
+
         // wait some time before restart
-        setTimeout(_self.startGame(), 2000);
+        setTimeout(function(){
+            _self.startGame()
+        }, 3000);
+        //setTimeout(_self.startGame(), 3000);
     };
 
     _self.goToNextSection = function () {
         // do not add _currentScore until go to next section
         _totalScore += _currentScore;
         _self.getSectionQuestions();// get new section data async
+
         _resetGameCount = 0;
+        _passedSectionCount++;
+
+        if (_passedSectionCount % 2 === 0)
+        {
+            _self.showFullScreenAdv();
+        }
     };
 
     _self.showScoreCalculationInfo = function (){
@@ -484,6 +631,11 @@ var Game = function () {
             _self._sectionPassCount--;
             $('#passRightCount').html("PAS: " + _self._sectionPassCount);
             getCorrectAnswer();
+
+            if (_self._isPassDisabled)
+            {
+                _self.enablePassBtn();
+            }
         }
 
         if (_self._sectionPassCount === 0)
@@ -495,15 +647,22 @@ var Game = function () {
 
     _self.disablePassBtn = function () {
         $('#passRightCount').addClass("disabled");
+        _self._isPassDisabled = true;
     };
 
     _self.enablePassBtn = function () {
         $('#passRightCount').removeClass("disabled");
+        _self._isPassDisabled = false;
     };
 
     _self.initializeSectionPassOption = function(pass_count) {
         _self._sectionPassCount = pass_count;
         $('#passRightCount').html("PAS: " + _self._sectionPassCount);
+
+        if (_self._isPassDisabled && (pass_count > 0))
+        {
+            _self.enablePassBtn();
+        }
     };
 
     _self.onRetryBtnClicked = function () {

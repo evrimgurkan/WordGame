@@ -10,29 +10,45 @@
     <link rel="stylesheet" type="text/css" href="../css/howTo.css" />
     <link rel="stylesheet" type="text/css" href="../css/fonts.css" />
 
-    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="../cordova.js"></script>
     <script type="text/javascript" src="../js/strings.js"></script>
     <script type="text/javascript" src="../js/navigate.js"></script>
+    <script type="text/javascript" src="../js/google-analytics.js"></script>
     <title>How To Page</title>
+
     <script type="application/javascript">
+        function onLoad() {
+            if(( /(ipad|iphone|ipod|android|windows phone)/i.test(navigator.userAgent) )) {
+                document.addEventListener('deviceready', onDeviceReady, false);
+            } else {
+                onDeviceReady();
+            }
+        }
+
+        // PhoneGap is loaded and it is now safe to make calls PhoneGap methods
+        //
+        function onDeviceReady() {
+            GA.initialize();
+            GA.trackView('HowtoPage');
+        }
         navigation.initialize();
         navigation.setPreviousPage('../index.html');
     </script>
 </head>
-<body>
+<body onload="onLoad()">
     <div id="menuBanner">
         <a onclick="navigation.onBackKeyDown()" class="sideMenuButton"></a>
-        <a href="#" class="appName">bilgeç</a>
+        <a href="#" class="appName">sorukolik</a>
     </div>
     <div class="description">
         <p>
             Oyunu oynamak çok basit!
         </p>
             <ul>
-                <li>İnternet bağlantınızın olduğundan emin olunuz !</li>
+                <li>İnternet bağlantınızın olduğundan emin olunuz.</li>
                 <li>Oyun sayfasına giriş yapınız.</li>
                 <li>Verilen süre içerisinde gelen soruları cevaplayınız.</li>
-                <li>En kısa sürede en yüksek skoru yapmaya çalışın.</li>
+                <li>En kısa sürede en yüksek skoru yapmaya çalışınız.</li>
                 <li>Yanlış cevap vermeniz durumunda aynı kategoride başa döndürüleceksiniz.</li>
                 <li>Unutmayın yanlış cevaplarda ve oyunu yeniden oynadığınızda puanınızdan kesinti yapılacaktır.</li>
                 <li>Boşverin kuralları eğlenmenize bakın :) </li>

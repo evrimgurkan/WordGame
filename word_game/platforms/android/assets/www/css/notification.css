@@ -159,7 +159,7 @@
     position: relative;
     width: 90%;
     max-width: 400px;
-    margin: 35% auto;
+    margin: 25% auto;
     background: #FFF;
     border-radius: .25em .25em .4em .4em;
     text-align: center;
@@ -191,6 +191,7 @@
 .cd-popup-selection-container .cd-buttons-selection {
     margin: 0;
     padding: 0;
+    font-size: 175%;
 }
 
 .cd-popup-selection-container .cd-buttons-selection.disable {
@@ -258,6 +259,115 @@
     display: inline;
     text-align: center;
     padding: 1em;
+}
+
+/********************POPUP INFO DIALOG**************************/
+.cd-popup-info {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s 0s, visibility 0s 0.3s;
+
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(94, 110, 141, 0.9);
+    z-index: 99999;
+}
+
+.cd-popup-info.visible {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s 0s, visibility 0s 0s;
+}
+
+.cd-popup-info-container {
+    transform: translateY(-40px);
+    transition-property: transform;
+    transition-duration: 0.3s;
+
+    position: relative;
+    width: 90%;
+    max-width: 400px;
+    margin: 5em auto;
+    background: #FFF;
+    border-radius: .25em .25em .4em .4em;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    -webkit-transform: translateY(-40px);
+    -moz-transform: translateY(-40px);
+    -ms-transform: translateY(-40px);
+    -o-transform: translateY(-40px);
+    -webkit-backface-visibility: hidden;
+    -webkit-transition-property: -webkit-transform;
+    -moz-transition-property: -moz-transform;
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+
+}
+
+.is-visible .cd-popup-info-container {
+    transform: translateY(0);
+}
+.cd-popup-info-container p {
+    padding: 0.5em 1em;
+}
+.cd-popup-info-container .cd-buttons-info li {
+    float: left;
+    width: 50%;
+    text-decoration: none;
+    list-style: none;
+}
+.cd-popup-info-container .cd-buttons-info {
+    margin: 0;
+    padding: 0;
+    font-size: 160%;
+}
+
+.cd-popup-info-container .cd-buttons-info.disable {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.cd-popup-info-container .cd-buttons-info a {
+    display: block;
+    height: 60px;
+    line-height: 60px;
+    /*text-transform: uppercase;*/
+    font-family: 'Inder', cursive;
+    color: #FFF;
+    -webkit-transition: background-color 0.2s;
+    -moz-transition: background-color 0.2s;
+    transition: background-color 0.2s;
+    text-decoration: none;
+}
+.cd-popup-info-container .cd-buttons-info li:first-child a {
+    background: #fc7169;
+    border-radius: 0 0 0 .25em;
+}
+
+.cd-popup-info-container .cd-buttons-info li:last-child a {
+    background: #b6bece;
+    border-radius: 0 0 .25em 0;
+}
+
+.cd-popup-info-container .message-area-info{
+    font-size: 110%;
+}
+
+.cd-popup-info-container .message-area-info-red{
+    font-size: 150%;
+    color: red;
+}
+
+.cd-popup-info-container .message-area-info span{
+    color: green;
+    font-size: 120%;
+}
+
+.cd-popup-info-container .message-area-info-red span{
+    font-size: 175%;
 }
 
 /*******************LOADER*********************/
