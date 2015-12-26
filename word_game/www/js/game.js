@@ -179,11 +179,15 @@ var Game = function () {
                 //_self.showFullScreenAdv();
 
                 _self.currentGameState = _gameStates.time_is_up;
-                // no need to show score when time is up
-                //var score = _self.calculateScore();
                 _self.stopTimer();
-                var message = CONSTANTS.strings.game.MESSAGE_TIME_IS_UP;//  + CONSTANTS.strings.game.MESSAGE_SCORE + score ;
-                _self.notifyGameFinishedMessage(message);
+
+                // no need to show score when time is up
+                //var message = CONSTANTS.strings.game.MESSAGE_TIME_IS_UP;//  + CONSTANTS.strings.game.MESSAGE_SCORE + score ;
+                //_self.notifyGameFinishedMessage(message);
+
+                // Show score even if section is not completed
+                //TODO: Remove unused functions about this modification
+                _self.sectionCompleted();
             }
             else if (_self.currentGameState === _gameStates.section_completed) {
 
@@ -273,10 +277,16 @@ var Game = function () {
         var total_scores_count = parseInt(score_info.section_scores_count) + 1;
         var current_order = Object.keys(score_info.scoresList).length + 1;
         var message = "";
-        if (total_scores_count === current_order) // be last score
+        if (current_order === 1)
+        {
+			message = CONSTANTS.strings.game.MESSAGE_SCORE_ORDER_HIGHEST +
+                CONSTANTS.strings.game.MESSAGE_SCORE + _currentScore ;
+        }
+        else if (total_scores_count === current_order) // be last score
         {
             message = total_scores_count + CONSTANTS.strings.game.MESSAGE_SCORE_ORDER_PREFIX  +
-                CONSTANTS.strings.game.MESSAGE_SCORE_ORDER_LAST;
+                CONSTANTS.strings.game.MESSAGE_SCORE_ORDER_LAST + 
+                CONSTANTS.strings.game.MESSAGE_SCORE + _currentScore ;
         }
         else
         {

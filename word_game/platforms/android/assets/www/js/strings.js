@@ -27,6 +27,7 @@ var CONSTANTS = {
              MESSAGE_COMPLETED_QUESTIONS : 'Tebrikler, Tüm soruları cevapladınız.',
              MESSAGE_SCORE_ORDER_PREFIX : ' kişi arasından ',
              MESSAGE_SCORE_ORDER_LAST : 'sonuncu oldunuz. ',
+             MESSAGE_SCORE_ORDER_HIGHEST: 'Tebrikler, Bu gruptaki en yüksek puanı yaptınız.',
              MESSAGE_SCORE_ORDER_POSTFIX : '. oldunuz. ',
              MESSAGE_NO_DATA : 'Sorular yüklenemedi, internet bağlantınızı kontrol edin ve yeniden deneyin.',
              MESSAGE_SCORE : ' Puanınız : ',

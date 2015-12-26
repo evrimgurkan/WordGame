@@ -36,10 +36,10 @@ var ADMOB = {
             // height: integer, // valid when set adSize 'CUSTOM'
             position: AdMob.AD_POSITION.BOTTOM_CENTER,
             // offsetTopBar: false, // avoid overlapped by status bar, for iOS7+
-            //bgColor: 'black', // color name, or '#RRGGBB'
+            bgColor: '#1A2631', // color name, or '#RRGGBB'
             // x: integer,		// valid when set position to 0 / POS_XY
             // y: integer,		// valid when set position to 0 / POS_XY
-            isTesting: true // set to true, to receiving test ad for testing purpose
+            isTesting: false // set to true, to receiving test ad for testing purpose
             // autoShow: true // auto show interstitial ad when loaded, set to false if prepare/show
 
         };
@@ -83,6 +83,7 @@ var ADMOB = {
 
 
     initialize : function () {
+        //return;
         if (typeof AdMob === CONSTANTS.strings.global.UNDEFINED)
         {
             return;
@@ -139,6 +140,7 @@ var ADMOB = {
     },
 
     prepareFullScreenAdv : function(autoshow, successCallback, errorCallback) {
+        //return;
         if (typeof AdMob === CONSTANTS.strings.global.UNDEFINED)
         {
             return;
@@ -158,6 +160,7 @@ var ADMOB = {
     },
 
     showFullScreenAdv : function(){
+        //return;
         if (typeof AdMob === CONSTANTS.strings.global.UNDEFINED)
         {
             return;

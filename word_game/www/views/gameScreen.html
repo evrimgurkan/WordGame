@@ -120,7 +120,7 @@
             </div> <!-- cd-popup-container -->
         </div> <!-- cd-popup -->
 
-        <div class="cd-popup-selection visible" role="alert">
+        <div class="cd-popup-selection" role="alert">
             <div class="cd-popup-selection-container">
                 <div class="difficulties visible">
                     <ul id="difficulty-list">
@@ -163,6 +163,8 @@
 
             function getSelectedDiffLevel()
             {
+                return 1; // To remove selecting diff level dialog
+
                 $('.cd-popup-selection').removeClass("visible");
                 $('.difficulties').removeClass("visible");
                 if( document.getElementById("radio_hard").checked === true)
@@ -178,6 +180,11 @@
                     return 1;
                 }
             }
+
+            // To remove selecting diff level dialog
+            // Call function accordingly
+            onDifficultyLevelSelected();
+
         </script>
     </body>
 </html>

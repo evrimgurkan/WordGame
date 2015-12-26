@@ -29,7 +29,7 @@ var navigation = {
 
     onBackKeyDown: function() {
         //history.back();
-        //alert("back basıldı _previousPage : " +  _previousPage);
+
         if (navigation._previousPage !== CONSTANTS.strings.global.UNDEFINED)
         {
             window.location = navigation._previousPage;
