@@ -9,6 +9,7 @@ var Game = function () {
     var _application = new Application(_self);
     var _currentSectionNo;
     var _timerInterval,
+        _fullAdShowTime = 10, // Default time for full adv show
         _wrongAnswerCount, // used to handle wrong answer count
         _currentTime,
         _resetGameCount = 0, // used to handle restart game count
@@ -144,6 +145,7 @@ var Game = function () {
         _self.initTimers(_gameData.sectionTime);
 
         _self.prepareFullScreenAdv();
+        _fullAdShowTime = _self.calculateFullAdTime();
         //_self.updateStep();
     };
 
@@ -162,6 +164,11 @@ var Game = function () {
             }
 
             $('#timer_circle').css('stroke-dashoffset', initialOffset-(i*(initialOffset/time)));
+
+            if (_fullAdShowTime === i)
+            {
+                _self.showFullScreenAdv();
+            }
 
             if (time >= i)
             {
@@ -198,6 +205,11 @@ var Game = function () {
             i++;
         }, 1000);
     };
+
+    _self.calculateFullAdTime = function () {
+        var time = Math.floor((Math.random() * 20) + 5);
+        return time;
+    }
     
     _self.showFullScreenAdv = function () {
         GA.trackEvent('ADMOB','ShowFullScreenAdv');
@@ -567,10 +579,10 @@ var Game = function () {
         _self.clearAllScreen();
         _resetGameCount++;
 
-        if (_resetGameCount % 2 === 0)
-        {
-            _self.showFullScreenAdv();
-        }
+        //if (_resetGameCount % 2 === 0)
+        //{
+        //    _self.showFullScreenAdv();
+        //}
 
         // wait some time before restart
         setTimeout(function(){
@@ -587,10 +599,10 @@ var Game = function () {
         _resetGameCount = 0;
         _passedSectionCount++;
 
-        if (_passedSectionCount % 2 === 0)
-        {
-            _self.showFullScreenAdv();
-        }
+        //if (_passedSectionCount % 2 === 0)
+        //{
+        //    _self.showFullScreenAdv();
+        //}
     };
 
     _self.showScoreCalculationInfo = function (){
